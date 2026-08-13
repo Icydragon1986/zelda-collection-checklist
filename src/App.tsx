@@ -72,7 +72,21 @@ function App() {
   );
 
   return <TooltipProvider><UpdateChecker /><div className="min-h-screen bg-background"><div className="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-8 sm:px-6">
-    <header className="flex items-start justify-between gap-4"><div><h1 className="text-2xl font-bold tracking-tight"><span className="text-primary">Triforce</span> Checklist</h1><p className="text-sm text-muted-foreground">Ma collection The Legend of Zelda</p></div><div className="flex gap-2"><Button variant="outline" size="icon" title="Statistiques et PDF" onClick={() => setDashboardOpen(true)}><BarChart3 className="size-4" /></Button><CollectionMenu /><ThemeToggle /></div></header>
+    <header className="flex items-center justify-between gap-4">
+      <div className="flex min-w-0 items-center gap-3">
+        <img
+          src="/triforce-checklist-logo.png"
+          alt=""
+          aria-hidden="true"
+          className="size-[3.25rem] shrink-0 object-contain drop-shadow-sm"
+        />
+        <div className="min-w-0">
+          <h1 className="text-2xl font-bold tracking-tight"><span className="text-primary">Triforce</span> Checklist</h1>
+          <p className="text-sm text-muted-foreground">Ma collection The Legend of Zelda</p>
+        </div>
+      </div>
+      <div className="flex shrink-0 gap-2"><Button variant="outline" size="icon" title="Statistiques et PDF" onClick={() => setDashboardOpen(true)}><BarChart3 className="size-4" /></Button><CollectionMenu /><ThemeToggle /></div>
+    </header>
     <FilterBar />
     <Tabs value={category} onValueChange={(v) => setCategory(v as CategoryTab)}>
       <TabsList className="grid !h-auto w-full grid-cols-3 gap-1.5 rounded-xl border border-border/60 bg-card/70 p-1.5 shadow-sm">

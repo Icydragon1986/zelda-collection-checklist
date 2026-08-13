@@ -43,7 +43,7 @@ jobs:
       - name: Installer les dépendances
         run: npm ci --prefer-offline --no-audit
       - name: Compiler l'interface
-        run: npm run build
+        run: npm run check
       - name: Précompiler l'application Windows
         run: cargo build --manifest-path src-tauri/Cargo.toml --release
       - name: Afficher l'efficacité du cache

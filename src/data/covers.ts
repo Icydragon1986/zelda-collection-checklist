@@ -139,6 +139,8 @@ export const GAME_COVERS: Record<string, string> = {
   "jp-3ds-hw-legends": "/images/library/games/584fb9082efdaf4d0343.webp",
   "jp-3ds-mm3d": "/images/library/games/55b06a6110e261eaef09.webp",
   "jp-3ds-oot3d": "/images/library/games/994cc572063151b13fd0.webp",
+  "jp-bs-zelda-map1": "/images/games/satellaview/bs-zelda-map1.png",
+  "jp-bs-zelda-map2": "/images/games/satellaview/bs-zelda-map2.png",
   "jp-bs-zelda-ist": "/images/library/games/c9228522f7fdc60201f3.webp",
   "jp-bs-alttp": "/images/library/games/6e219b70f752c0d2e2d7.webp",
   "jp-ds-phantom-hourglass": "/images/library/games/8df3a13af055a5822754.webp",

@@ -1,29 +1,46 @@
-import { useMemo } from "react";
-import { BarChart3, Box, Gamepad2, ImageOff, Monitor, Printer, ScanLine, Trophy, X } from "lucide-react";
+import { useMemo, useState } from "react";
+import { BarChart3, Box, Gamepad2, ImageOff, Monitor, Printer, RotateCcw, ScanLine, Trophy, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { AMIIBO } from "@/data/amiibo";
 import { GAMES } from "@/data/games";
 import { MISSING_VISUALS, REGIONS, boxedAmiibo } from "@/data/catalog";
 import { SPECIAL_CONSOLES } from "@/data/specialConsoles";
-import { REGION_LABELS, type Region } from "@/data/types";
+import { CATEGORY_LABELS, REGION_LABELS, type GameCategory, type Region } from "@/data/types";
 import { useCollection } from "@/store/useCollection";
 
 const anyGame = (value?: { cartridge: boolean; manual: boolean; box: boolean; cib: boolean }) => !!value && Object.values(value).some(Boolean);
 const anyAmiibo = (value?: { figure: boolean; box: boolean; cib: boolean }) => !!value && Object.values(value).some(Boolean);
 const pct = (owned: number, total: number) => total ? Math.round(owned / total * 100) : 0;
 
-type Metric = { label: string; owned: number; total: number; icon: typeof Gamepad2 };
+type AnalysisCategory = "all" | "games" | "consoles" | "boxed" | "individuals";
+type AnalysisRegion = "all" | Region;
+type AnalysisGameCategory = "all" | GameCategory;
+type Metric = { key: Exclude<AnalysisCategory, "all">; label: string; owned: number; total: number; icon: typeof Gamepad2 };
 type MissingGroup = { label: string; items: string[] };
+
+const ANALYSIS_CATEGORIES: { value: AnalysisCategory; label: string }[] = [
+  { value: "all", label: "Toutes les catégories" },
+  { value: "games", label: "Jeux" },
+  { value: "consoles", label: "Consoles" },
+  { value: "boxed", label: "Amiibo en boîte" },
+  { value: "individuals", label: "Amiibo individuels" },
+];
+
+const GAME_CATEGORIES = Object.entries(CATEGORY_LABELS) as [GameCategory, string][];
 
 export function CollectionDashboard({ open, onClose }: { open: boolean; onClose: () => void }) {
   const games = useCollection((state) => state.games);
   const amiibo = useCollection((state) => state.amiibo);
   const consoles = useCollection((state) => state.consoles);
+  const [analysisRegion, setAnalysisRegion] = useState<AnalysisRegion>("all");
+  const [analysisCategory, setAnalysisCategory] = useState<AnalysisCategory>("all");
+  const [analysisGameCategory, setAnalysisGameCategory] = useState<AnalysisGameCategory>("all");
 
   const report = useMemo(() => {
-    const byRegion = REGIONS.map((region) => {
-      const regionalGames = GAMES.filter((item) => item.region === region);
+    const selectedRegions = analysisRegion === "all" ? REGIONS : [analysisRegion];
+    const regionalBreakdown = selectedRegions.map((region) => {
+      const regionalGames = GAMES.filter((item) => item.region === region && (analysisGameCategory === "all" || item.category === analysisGameCategory));
       const regionalConsoles = SPECIAL_CONSOLES.filter((item) => item.region === region || item.region === "MONDE");
       const individuals = AMIIBO.filter((item) => (!item.regions || item.regions.includes(region)) && !item.pack);
       const boxed = boxedAmiibo(region);
@@ -37,53 +54,79 @@ export function CollectionDashboard({ open, onClose }: { open: boolean; onClose:
     });
 
     const sum = (key: "games" | "consoles" | "boxed" | "individuals") => ({
-      owned: byRegion.reduce((value, region) => value + region[key].owned, 0),
-      total: byRegion.reduce((value, region) => value + region[key].total, 0),
+      owned: regionalBreakdown.reduce((value, region) => value + region[key].owned, 0),
+      total: regionalBreakdown.reduce((value, region) => value + region[key].total, 0),
     });
-    const metrics: Metric[] = [
-      { label: "Jeux", ...sum("games"), icon: Gamepad2 },
-      { label: "Consoles", ...sum("consoles"), icon: Monitor },
-      { label: "Amiibo en boîte", ...sum("boxed"), icon: Box },
-      { label: "Amiibo individuels", ...sum("individuals"), icon: ScanLine },
+    const allMetrics: Metric[] = [
+      { key: "games", label: "Jeux", ...sum("games"), icon: Gamepad2 },
+      { key: "consoles", label: "Consoles", ...sum("consoles"), icon: Monitor },
+      { key: "boxed", label: "Amiibo en boîte", ...sum("boxed"), icon: Box },
+      { key: "individuals", label: "Amiibo individuels", ...sum("individuals"), icon: ScanLine },
     ];
+    const metrics = analysisCategory === "all" ? allMetrics : allMetrics.filter((metric) => metric.key === analysisCategory);
+    const activeMetricKeys = new Set(metrics.map((metric) => metric.key));
+    const byRegion = regionalBreakdown.map((row) => {
+      const values = (["games", "consoles", "boxed", "individuals"] as const).filter((key) => activeMetricKeys.has(key));
+      return {
+        region: row.region,
+        owned: values.reduce((total, key) => total + row[key].owned, 0),
+        total: values.reduce((total, key) => total + row[key].total, 0),
+      };
+    });
 
-    const missingGames = REGIONS.map((region) => ({
+    const missingGames = selectedRegions.map((region) => ({
       region,
       groups: groupItems(
-        GAMES.filter((item) => item.region === region && !anyGame(games[item.id])).map((item) => ({ group: item.console, label: item.title })),
+        GAMES.filter((item) => item.region === region && (analysisGameCategory === "all" || item.category === analysisGameCategory) && !anyGame(games[item.id])).map((item) => ({ group: item.console, label: item.title })),
       ),
     }));
-    const missingConsoles = REGIONS.map((region) => ({
+    const missingConsoles = selectedRegions.map((region) => ({
       region,
       groups: groupItems(
         SPECIAL_CONSOLES.filter((item) => (item.region === region || item.region === "MONDE") && !consoles[`${item.id}-${region}`]).map((item) => ({ group: item.family, label: item.name })),
       ),
     }));
-    const missingBoxed = REGIONS.map((region) => ({
+    const missingBoxed = selectedRegions.map((region) => ({
       region,
       groups: groupItems(boxedAmiibo(region).filter((item) => !anyAmiibo(amiibo[`boxed-${item.id}-${region}`])).map((item) => ({ group: item.series, label: item.name }))),
     }));
-    const missingIndividuals = REGIONS.map((region) => ({
+    const missingIndividuals = selectedRegions.map((region) => ({
       region,
       groups: groupItems(AMIIBO.filter((item) => (!item.regions || item.regions.includes(region)) && !item.pack && !anyAmiibo(amiibo[`${item.id}-${region}`])).map((item) => ({ group: item.series, label: item.name }))),
     }));
 
+    const filteredGames = GAMES.filter((item) => selectedRegions.includes(item.region) && (analysisGameCategory === "all" || item.category === analysisGameCategory));
     return {
       byRegion,
       metrics,
-      gameCib: GAMES.filter((item) => games[item.id]?.cib).length,
-      gameBoxed: GAMES.filter((item) => games[item.id]?.box || games[item.id]?.cib).length,
-      gameManuals: GAMES.filter((item) => games[item.id]?.manual || games[item.id]?.cib).length,
+      gameCib: filteredGames.filter((item) => games[item.id]?.cib).length,
+      gameBoxed: filteredGames.filter((item) => games[item.id]?.box || games[item.id]?.cib).length,
+      gameManuals: filteredGames.filter((item) => games[item.id]?.manual || games[item.id]?.cib).length,
       missingGames,
       missingConsoles,
       missingBoxed,
       missingIndividuals,
+      missingVisuals: MISSING_VISUALS.filter((item) => selectedRegions.includes(item.region)),
     };
-  }, [games, amiibo, consoles]);
+  }, [games, amiibo, consoles, analysisRegion, analysisCategory, analysisGameCategory]);
 
   if (!open) return null;
   const owned = report.metrics.reduce((sum, section) => sum + section.owned, 0);
   const total = report.metrics.reduce((sum, section) => sum + section.total, 0);
+  const includesGames = analysisCategory === "all" || analysisCategory === "games";
+  const includesConsoles = analysisCategory === "all" || analysisCategory === "consoles";
+  const includesBoxed = analysisCategory === "all" || analysisCategory === "boxed";
+  const includesIndividuals = analysisCategory === "all" || analysisCategory === "individuals";
+  const regionScope = analysisRegion === "all" ? "Toutes les régions" : REGION_LABELS[analysisRegion];
+  const categoryScope = ANALYSIS_CATEGORIES.find((item) => item.value === analysisCategory)?.label ?? "Toutes les catégories";
+  const gameScope = analysisGameCategory === "all" ? "Tous les types de jeu" : CATEGORY_LABELS[analysisGameCategory];
+  const scopeSummary = `${regionScope} · ${categoryScope}${includesGames && analysisGameCategory !== "all" ? ` · ${gameScope}` : ""}`;
+
+  const resetAnalysisFilters = () => {
+    setAnalysisRegion("all");
+    setAnalysisCategory("all");
+    setAnalysisGameCategory("all");
+  };
 
   return <div className="fixed inset-0 z-[80] overflow-y-auto bg-background/95 p-4 backdrop-blur-sm print:static print:overflow-visible print:bg-white print:p-0">
     <div className="mx-auto max-w-5xl print:max-w-none">
@@ -93,34 +136,52 @@ export function CollectionDashboard({ open, onClose }: { open: boolean; onClose:
       </div>
       <div className="hidden print:block"><h1 className="text-2xl font-bold">Triforce Checklist — Rapport de collection</h1><p>Généré le {new Date().toLocaleDateString("fr-CA")}</p></div>
 
+      <section className="mb-4 grid gap-3 rounded-xl border bg-card/80 p-4 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_auto] print:hidden">
+        <AnalysisSelect label="Région" value={analysisRegion} onChange={(value) => setAnalysisRegion(value as AnalysisRegion)}>
+          <option value="all">Toutes les régions</option>
+          {REGIONS.map((region) => <option key={region} value={region}>{REGION_LABELS[region]}</option>)}
+        </AnalysisSelect>
+        <AnalysisSelect label="Catégorie" value={analysisCategory} onChange={(value) => setAnalysisCategory(value as AnalysisCategory)}>
+          {ANALYSIS_CATEGORIES.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
+        </AnalysisSelect>
+        <AnalysisSelect label="Type de jeu" value={analysisGameCategory} onChange={(value) => setAnalysisGameCategory(value as AnalysisGameCategory)} disabled={!includesGames}>
+          <option value="all">Tous les types de jeu</option>
+          {GAME_CATEGORIES.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+        </AnalysisSelect>
+        <Button variant="outline" className="self-end" onClick={resetAnalysisFilters} disabled={analysisRegion === "all" && analysisCategory === "all" && analysisGameCategory === "all"}><RotateCcw className="size-4" />Réinitialiser</Button>
+      </section>
+      <p className="mb-3 hidden text-sm print:block">Portée : {scopeSummary}</p>
+
       <section className="overflow-hidden rounded-2xl border bg-gradient-to-br from-primary/15 via-card to-card p-5 print:break-inside-avoid">
-        <div className="flex flex-wrap items-end justify-between gap-3"><div><p className="text-sm font-medium text-muted-foreground">Collection globale</p><p className="text-4xl font-black tabular-nums">{pct(owned, total)}%</p></div><div className="text-right"><p className="text-2xl font-bold tabular-nums">{owned}/{total}</p><p className="text-xs text-muted-foreground">pièces répertoriées</p></div></div>
+        <div className="flex flex-wrap items-end justify-between gap-3"><div><p className="text-sm font-medium text-muted-foreground">{scopeSummary}</p><p className="text-4xl font-black tabular-nums">{pct(owned, total)}%</p></div><div className="text-right"><p className="text-2xl font-bold tabular-nums">{owned}/{total}</p><p className="text-xs text-muted-foreground">pièces répertoriées</p></div></div>
         <Progress value={pct(owned, total)} className="mt-4 h-3" />
       </section>
 
-      <section className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 print:grid-cols-4">
+      <section className={`mt-4 grid gap-3 ${report.metrics.length === 1 ? "grid-cols-1" : "sm:grid-cols-2 lg:grid-cols-4 print:grid-cols-4"}`}>
         {report.metrics.map((metric) => <MetricCard key={metric.label} metric={metric} />)}
       </section>
 
-      <section className="mt-5 grid gap-4 lg:grid-cols-[1.45fr_1fr] print:grid-cols-[1.45fr_1fr]">
+      <section className={`mt-5 grid gap-4 ${includesGames ? "lg:grid-cols-[1.45fr_1fr] print:grid-cols-[1.45fr_1fr]" : "lg:grid-cols-1 print:grid-cols-1"}`}>
         <div className="rounded-xl border bg-card p-4 print:break-inside-avoid"><h3 className="mb-3 font-semibold">Progression par région</h3><div className="space-y-3">{report.byRegion.map((row) => {
-          const rowOwned = row.games.owned + row.consoles.owned + row.boxed.owned + row.individuals.owned;
-          const rowTotal = row.games.total + row.consoles.total + row.boxed.total + row.individuals.total;
-          return <div key={row.region}><div className="mb-1 flex justify-between text-sm"><b>{REGION_LABELS[row.region]}</b><span className="tabular-nums text-muted-foreground">{rowOwned}/{rowTotal} · {pct(rowOwned, rowTotal)}%</span></div><Progress value={pct(rowOwned, rowTotal)} /></div>;
+          return <div key={row.region}><div className="mb-1 flex justify-between text-sm"><b>{REGION_LABELS[row.region]}</b><span className="tabular-nums text-muted-foreground">{row.owned}/{row.total} · {pct(row.owned, row.total)}%</span></div><Progress value={pct(row.owned, row.total)} /></div>;
         })}</div></div>
-        <div className="rounded-xl border bg-card p-4 print:break-inside-avoid"><div className="flex items-center gap-2"><Trophy className="size-4 text-primary" /><h3 className="font-semibold">État des jeux</h3></div><div className="mt-3 grid grid-cols-3 gap-2 text-center"><MiniStat label="CIB" value={report.gameCib} /><MiniStat label="Avec boîte" value={report.gameBoxed} /><MiniStat label="Avec livret" value={report.gameManuals} /></div></div>
+        {includesGames && <div className="rounded-xl border bg-card p-4 print:break-inside-avoid"><div className="flex items-center gap-2"><Trophy className="size-4 text-primary" /><h3 className="font-semibold">État des jeux</h3></div><div className="mt-3 grid grid-cols-3 gap-2 text-center"><MiniStat label="CIB" value={report.gameCib} /><MiniStat label="Avec boîte" value={report.gameBoxed} /><MiniStat label="Avec livret" value={report.gameManuals} /></div></div>}
       </section>
 
-      <section className="mt-5 rounded-xl border bg-card p-4 print:break-inside-avoid"><div className="flex items-center gap-2"><ImageOff className="size-4 text-primary" /><h3 className="font-semibold">Visuels officiels en attente</h3></div>{MISSING_VISUALS.map((item) => <p key={item.id} className="mt-2 text-sm"><b>{item.label}</b> · {REGION_LABELS[item.region]} — <span className="text-muted-foreground">{item.reason}</span></p>)}</section>
+      {includesBoxed && report.missingVisuals.length > 0 && <section className="mt-5 rounded-xl border bg-card p-4 print:break-inside-avoid"><div className="flex items-center gap-2"><ImageOff className="size-4 text-primary" /><h3 className="font-semibold">Visuels officiels en attente</h3></div>{report.missingVisuals.map((item) => <p key={item.id} className="mt-2 text-sm"><b>{item.label}</b> · {REGION_LABELS[item.region]} — <span className="text-muted-foreground">{item.reason}</span></p>)}</section>}
 
       <section className="mt-6 print:text-[9px]"><h3 className="mb-3 text-lg font-semibold">Éléments manquants</h3><div className="space-y-3">
-        <MissingCategory title="Jeux" icon={Gamepad2} regions={report.missingGames} />
-        <MissingCategory title="Consoles" icon={Monitor} regions={report.missingConsoles} />
-        <MissingCategory title="Amiibo en boîte" icon={Box} regions={report.missingBoxed} />
-        <MissingCategory title="Amiibo individuels" icon={ScanLine} regions={report.missingIndividuals} />
+        {includesGames && <MissingCategory title="Jeux" icon={Gamepad2} regions={report.missingGames} />}
+        {includesConsoles && <MissingCategory title="Consoles" icon={Monitor} regions={report.missingConsoles} />}
+        {includesBoxed && <MissingCategory title="Amiibo en boîte" icon={Box} regions={report.missingBoxed} />}
+        {includesIndividuals && <MissingCategory title="Amiibo individuels" icon={ScanLine} regions={report.missingIndividuals} />}
       </div></section>
     </div>
   </div>;
+}
+
+function AnalysisSelect({ label, value, onChange, disabled = false, children }: { label: string; value: string; onChange: (value: string) => void; disabled?: boolean; children: React.ReactNode }) {
+  return <label className={`grid gap-1 text-xs font-medium text-muted-foreground ${disabled ? "opacity-50" : ""}`}><span>{label}</span><select value={value} onChange={(event) => onChange(event.target.value)} disabled={disabled} className="h-9 rounded-md border border-input bg-background px-3 text-sm text-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30 disabled:cursor-not-allowed">{children}</select></label>;
 }
 
 function MetricCard({ metric }: { metric: Metric }) {

@@ -3697,8 +3697,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "tauri-app"
-version = "0.8.0"
+name = "zelda-collection-checklist"
+version = "0.9.0"
 dependencies = [
  "serde",
  "serde_json",

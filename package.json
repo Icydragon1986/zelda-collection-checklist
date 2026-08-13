@@ -1,11 +1,13 @@
 {
-  "name": "tauri-app",
+  "name": "zelda-collection-checklist",
   "private": true,
-  "version": "0.8.0",
+  "version": "0.9.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "audit:catalog": "node scripts/audit-catalog.mjs",
+    "check": "npm run audit:catalog && npm run build",
     "preview": "vite preview",
     "tauri": "tauri"
   },

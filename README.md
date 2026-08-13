@@ -21,7 +21,8 @@ Téléchargez le fichier `setup.exe` de la [dernière version](https://github.co
 - visionneuse plein écran pour toutes les images;
 - bibliothèque d'images intégrée pour un fonctionnement hors ligne;
 - mises à jour automatiques sécurisées et signées.
-- tableau de statistiques global avec liste des éléments manquants;
+- tableau de statistiques filtrable par région, catégorie et type de jeu;
+- liste des éléments manquants adaptée aux filtres d'analyse;
 - checklist imprimable ou enregistrable en PDF;
 - registre explicite des visuels officiels encore indisponibles.
 
@@ -31,6 +32,10 @@ Téléchargez le fichier `setup.exe` de la [dernière version](https://github.co
 npm install
 npm run tauri dev
 ```
+
+Avant une publication, `npm run check` valide automatiquement les identifiants,
+les régions, les associations d'images et les ressources locales, puis compile
+l'interface.
 
 Le catalogue central est exposé par `src/data/catalog.ts`. Ce module regroupe les
 trois régions, les amiibo réellement vendus en boîte et la liste des visuels
