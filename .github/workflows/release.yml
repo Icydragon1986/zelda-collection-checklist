@@ -32,6 +32,6 @@ jobs:
         with:
           tagName: v__VERSION__
           releaseName: "Zelda Collection Checklist v__VERSION__"
-          releaseBody: "Grand audit physique : 39 variantes de jeux et 2 bundles Game Boy ajoutés, emballages amiibo régionaux fiabilisés, nouvelles jaquettes locales et compilation GitHub accélérée par cache Rust."
+          releaseBody: "Audit amiibo régional : 15 emballages PAL et japonais ajoutés en haute qualité, dont Zelda, Ganondorf, les quatre Sages, Link's Awakening et Zelda & Loftwing. Les visuels restent entièrement locaux et consultables hors ligne."
           releaseDraft: false
           prerelease: false
