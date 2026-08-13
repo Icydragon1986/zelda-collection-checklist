@@ -139,4 +139,5 @@
   body > #root > .fixed,
   body > #root > .fixed * { color: #111827 !important; }
   body > #root > .fixed .text-muted-foreground { color: #4b5563 !important; }
+  body > #root > .fixed details > div { display: grid !important; }
 }
