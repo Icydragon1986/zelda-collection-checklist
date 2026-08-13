@@ -13,8 +13,8 @@ jobs:
   release-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -29,7 +29,6 @@ jobs:
         with:
           tagName: v__VERSION__
           releaseName: "Zelda Collection Checklist v__VERSION__"
-          releaseBody: "Nouvelle version de Zelda Collection Checklist. Téléchargez le fichier setup.exe pour l’installation."
+          releaseBody: "Ajout des sauvegardes exportables, des filtres de collection, de la vérification manuelle des mises à jour et correction de la visionneuse d’images."
           releaseDraft: false
           prerelease: false
-

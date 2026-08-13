@@ -16,6 +16,9 @@ Téléchargez le fichier `setup.exe` de la [dernière version](https://github.co
 - jaquettes et photos agrandissables;
 - remplacement local d’une image;
 - sauvegarde persistante de la collection;
+- exportation et restauration d'une sauvegarde JSON;
+- filtres Possédés, Manquants, CIB et Incomplets;
+- visionneuse plein écran pour toutes les images;
 - mises à jour automatiques sécurisées et signées.
 
 ## Développement

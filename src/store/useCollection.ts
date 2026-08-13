@@ -44,6 +44,8 @@ interface CollectionState {
   toggleConsole: (id: string) => void;
   setCustomCover: (id: string, file: File) => Promise<void>;
   clearCustomCover: (id: string) => Promise<void>;
+  createBackup: () => string;
+  restoreBackup: (raw: string) => void;
   init: () => Promise<void>;
 }
 
@@ -140,5 +142,36 @@ export const useCollection = create<CollectionState>((set, get) => ({
     } catch {
       // Le fichier a peut-être déjà disparu — pas grave, l'entrée du store est déjà nettoyée.
     }
+  },
+
+  createBackup: () => JSON.stringify({
+    format: "triforce-checklist",
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    collection: {
+      games: get().games,
+      amiibo: get().amiibo,
+      consoles: get().consoles,
+    },
+  }, null, 2),
+
+  restoreBackup: (raw) => {
+    const parsed = JSON.parse(raw) as {
+      format?: string;
+      version?: number;
+      collection?: {
+        games?: Record<string, unknown>;
+        amiibo?: Record<string, unknown>;
+        consoles?: Record<string, boolean>;
+      };
+    };
+    if (parsed.format !== "triforce-checklist" || parsed.version !== 1 || !parsed.collection) {
+      throw new Error("Ce fichier n'est pas une sauvegarde Triforce Checklist valide.");
+    }
+    const games = Object.fromEntries(Object.entries(parsed.collection.games ?? {}).map(([id, value]) => [id, toOwnership(value)]));
+    const amiibo = Object.fromEntries(Object.entries(parsed.collection.amiibo ?? {}).map(([id, value]) => [id, toAmiiboOwnership(value)]));
+    const consoles = Object.fromEntries(Object.entries(parsed.collection.consoles ?? {}).filter(([, value]) => typeof value === "boolean"));
+    set({ games, amiibo, consoles });
+    persist({ games, amiibo, consoles, customCovers: get().customCovers });
   },
 }));

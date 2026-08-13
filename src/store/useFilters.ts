@@ -5,17 +5,21 @@ export type OptionalCategory = Extract<
   GameCategory,
   "spinoff" | "compilation" | "edition" | "broadcast" | "curiosity"
 >;
+export type OwnershipFilter = "all" | "owned" | "missing" | "cib" | "incomplete";
 
 interface FiltersState {
   search: string;
+  ownership: OwnershipFilter;
   categories: Record<OptionalCategory, boolean>;
   setSearch: (value: string) => void;
+  setOwnership: (value: OwnershipFilter) => void;
   toggleCategory: (category: OptionalCategory) => void;
   isCategoryVisible: (category: GameCategory) => boolean;
 }
 
 export const useFilters = create<FiltersState>((set, get) => ({
   search: "",
+  ownership: "all",
   categories: {
     spinoff: true,
     compilation: true,
@@ -24,6 +28,7 @@ export const useFilters = create<FiltersState>((set, get) => ({
     curiosity: false,
   },
   setSearch: (value) => set({ search: value }),
+  setOwnership: (value) => set({ ownership: value }),
   toggleCategory: (category) =>
     set((state) => ({
       categories: { ...state.categories, [category]: !state.categories[category] },

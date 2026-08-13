@@ -73,9 +73,15 @@ export function Cover({
     <div
       role={showImage ? "button" : undefined}
       tabIndex={showImage ? 0 : undefined}
-      onClick={() => showImage && setPreviewOpen(true)}
+      onClick={(event) => {
+        if (!showImage) return;
+        event.stopPropagation();
+        event.preventDefault();
+        setPreviewOpen(true);
+      }}
       onKeyDown={(event) => {
         if (showImage && (event.key === "Enter" || event.key === " ")) {
+          event.stopPropagation();
           event.preventDefault();
           setPreviewOpen(true);
         }

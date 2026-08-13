@@ -15,6 +15,7 @@ import { REGION_LABELS, type Region } from "@/data/types";
 import { useCollection } from "@/store/useCollection";
 import { useFilters } from "@/store/useFilters";
 import { UpdateChecker } from "@/components/UpdateChecker";
+import { CollectionMenu } from "@/components/CollectionMenu";
 
 const REGIONS: Region[] = ["NA", "PAL", "JP"];
 type CategoryTab = "games" | "consoles" | "amiibo";
@@ -65,7 +66,7 @@ function App() {
   );
 
   return <TooltipProvider><UpdateChecker /><div className="min-h-screen bg-background"><div className="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-8 sm:px-6">
-    <header className="flex items-start justify-between gap-4"><div><h1 className="text-2xl font-bold tracking-tight"><span className="text-primary">Triforce</span> Checklist</h1><p className="text-sm text-muted-foreground">Ma collection The Legend of Zelda</p></div><ThemeToggle /></header>
+    <header className="flex items-start justify-between gap-4"><div><h1 className="text-2xl font-bold tracking-tight"><span className="text-primary">Triforce</span> Checklist</h1><p className="text-sm text-muted-foreground">Ma collection The Legend of Zelda</p></div><div className="flex gap-2"><CollectionMenu /><ThemeToggle /></div></header>
     <FilterBar />
     <Tabs value={category} onValueChange={(v) => setCategory(v as CategoryTab)}>
       <TabsList className="grid !h-auto w-full grid-cols-3 gap-1.5 rounded-xl border border-border/60 bg-card/70 p-1.5 shadow-sm">

@@ -10,10 +10,18 @@ import type { Region } from "@/data/types";
 
 export function SpecialConsoleView({ region }: { region: Region }) {
   const query = normalize(useFilters((s) => s.search).trim());
+  const ownership = useFilters((s) => s.ownership);
   const consoles = useCollection((s) => s.consoles);
   const toggle = useCollection((s) => s.toggleConsole);
   const regional = SPECIAL_CONSOLES.filter((c) => c.region === region);
-  const items = query ? regional.filter((c) => normalize(`${c.name} ${c.family} ${c.region}`).includes(query)) : regional;
+  const searched = query ? regional.filter((c) => normalize(`${c.name} ${c.family} ${c.region}`).includes(query)) : regional;
+  const items = searched.filter((item) => {
+    const owned = !!consoles[`${item.id}-${region}`];
+    if (ownership === "owned" || ownership === "cib") return owned;
+    if (ownership === "missing") return !owned;
+    if (ownership === "incomplete") return false;
+    return true;
+  });
 
   return (
     <div className="grid gap-3 sm:grid-cols-2">
