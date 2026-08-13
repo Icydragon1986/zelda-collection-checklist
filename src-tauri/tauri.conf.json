@@ -1,7 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "Zelda Collection Checklist",
-  "version": "0.2.1",
+  "mainBinaryName": "Zelda Collection Checklist",
+  "version": "0.3.0",
   "identifier": "com.zelda.checklist",
   "build": {
     "beforeDevCommand": "npm run dev",

@@ -29,6 +29,6 @@ jobs:
         with:
           tagName: v__VERSION__
           releaseName: "Zelda Collection Checklist v__VERSION__"
-          releaseBody: "Ajout des sauvegardes exportables, des filtres de collection, de la vérification manuelle des mises à jour et correction de la visionneuse d’images."
+          releaseBody: "Bibliothèque d’images maintenant intégrée pour fonctionner hors ligne, ajout du troisième titre Satellaview et exécutable renommé Zelda Collection Checklist."
           releaseDraft: false
           prerelease: false

@@ -168,6 +168,7 @@ const JP: Game[] = [
   { id: "jp-bs-zelda-map1", title: "BS Zelda no Densetsu (Map 1)", console: "Satellaview", region: "JP", year: 1995, category: "broadcast", notes: "Diffusion satellite hebdomadaire, pas un produit retail standard. Utilise un avatar BS-X, pas Link." },
   { id: "jp-bs-zelda-map2", title: "BS Zelda no Densetsu (Map 2)", console: "Satellaview", region: "JP", year: 1996, category: "broadcast", notes: "Diffusion satellite, version remixée." },
   { id: "jp-bs-zelda-ist", title: "BS Zelda no Densetsu: Inishie no Sekiban (Ancient Stone Tablets)", console: "Satellaview", region: "JP", year: 1997, category: "broadcast", notes: "Suite se déroulant 6 ans après A Link to the Past." },
+  { id: "jp-bs-alttp", title: "Zelda no Densetsu: Kamigami no Triforce (Satellaview)", console: "Satellaview", region: "JP", year: 1997, category: "broadcast", notes: "Port officiel Satellaview d'A Link to the Past, diffusé sans SoundLink et jouable depuis une Memory Pak après son téléchargement. À ne pas confondre avec Ancient Stone Tablets." },
 
   { id: "jp-snes-alttp", title: "Zelda no Densetsu: Kamigami no Triforce", console: "SNES", region: "JP", year: 1991, category: "main", notes: "Titre japonais : \"Triforce of the Gods\"." },
 

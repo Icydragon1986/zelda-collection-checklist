@@ -19,6 +19,7 @@ Téléchargez le fichier `setup.exe` de la [dernière version](https://github.co
 - exportation et restauration d'une sauvegarde JSON;
 - filtres Possédés, Manquants, CIB et Incomplets;
 - visionneuse plein écran pour toutes les images;
+- bibliothèque d'images intégrée pour un fonctionnement hors ligne;
 - mises à jour automatiques sécurisées et signées.
 
 ## Développement
