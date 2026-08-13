@@ -7,6 +7,9 @@ on:
     paths:
       - "src/**"
       - "src-tauri/**"
+      - "index.html"
+      - "vite.config.ts"
+      - "tsconfig*.json"
       - "package.json"
       - "package-lock.json"
       - ".github/workflows/**"
