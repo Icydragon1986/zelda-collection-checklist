@@ -21,6 +21,9 @@ Téléchargez le fichier `setup.exe` de la [dernière version](https://github.co
 - visionneuse plein écran pour toutes les images;
 - bibliothèque d'images intégrée pour un fonctionnement hors ligne;
 - mises à jour automatiques sécurisées et signées.
+- tableau de statistiques global avec liste des éléments manquants;
+- checklist imprimable ou enregistrable en PDF;
+- registre explicite des visuels officiels encore indisponibles.
 
 ## Développement
 
@@ -28,5 +31,10 @@ Téléchargez le fichier `setup.exe` de la [dernière version](https://github.co
 npm install
 npm run tauri dev
 ```
+
+Le catalogue central est exposé par `src/data/catalog.ts`. Ce module regroupe les
+trois régions, les amiibo réellement vendus en boîte et la liste des visuels
+officiels en attente. En mode développement, l'application signale automatiquement
+dans la console les identifiants en double ou les régions invalides.
 
 Les images et marques appartiennent à leurs détenteurs respectifs. Ce projet personnel n’est ni affilié ni approuvé par Nintendo.

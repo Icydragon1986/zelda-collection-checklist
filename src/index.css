@@ -128,3 +128,15 @@
     @apply font-sans;
     }
 }
+
+@media print {
+  @page { size: A4; margin: 10mm; }
+  html, body { background: white !important; color: black !important; }
+  body > #root > :not(.fixed) { display: none !important; }
+  * { box-shadow: none !important; }
+  body > #root > .fixed,
+  body > #root > .fixed [class*="bg-"] { background: white !important; }
+  body > #root > .fixed,
+  body > #root > .fixed * { color: #111827 !important; }
+  body > #root > .fixed .text-muted-foreground { color: #4b5563 !important; }
+}

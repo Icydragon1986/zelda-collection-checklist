@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Box, Gamepad2, Monitor, ScanLine } from "lucide-react";
+import { BarChart3, Box, Gamepad2, Monitor, ScanLine } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,6 +16,9 @@ import { useCollection } from "@/store/useCollection";
 import { useFilters } from "@/store/useFilters";
 import { UpdateChecker } from "@/components/UpdateChecker";
 import { CollectionMenu } from "@/components/CollectionMenu";
+import { CollectionDashboard } from "@/components/CollectionDashboard";
+import { Button } from "@/components/ui/button";
+import { boxedAmiibo, validateCatalog } from "@/data/catalog";
 
 const REGIONS: Region[] = ["NA", "PAL", "JP"];
 type CategoryTab = "games" | "consoles" | "amiibo";
@@ -25,6 +28,7 @@ function App() {
   const [category, setCategory] = useState<CategoryTab>("games");
   const [region, setRegion] = useState<Region>("NA");
   const [amiiboMode, setAmiiboMode] = useState<AmiiboMode>("boxed");
+  const [dashboardOpen, setDashboardOpen] = useState(false);
   const ready = useCollection((s) => s.ready);
   const games = useCollection((s) => s.games);
   const amiibo = useCollection((s) => s.amiibo);
@@ -33,6 +37,11 @@ function App() {
   const isCategoryVisible = useFilters((s) => s.isCategoryVisible);
 
   useEffect(() => { void useCollection.getState().init(); }, []);
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+    const catalogErrors = validateCatalog();
+    if (catalogErrors.length) console.warn("Erreurs du catalogue Zelda:", catalogErrors);
+  }, []);
 
   const counts = useMemo(() => Object.fromEntries(REGIONS.map((r) => {
     if (category === "games") {
@@ -41,10 +50,7 @@ function App() {
     }
     if (category === "amiibo") {
       const boxed = amiiboMode === "boxed";
-      const items = AMIIBO.filter((a) =>
-        (!a.regions || a.regions.includes(r)) &&
-        (boxed ? (!a.boxedRegions || a.boxedRegions.includes(r)) : !a.pack),
-      );
+      const items = boxed ? boxedAmiibo(r) : AMIIBO.filter((a) => (!a.regions || a.regions.includes(r)) && !a.pack);
       return [r, { owned: items.filter((a) => {
         const own = amiibo[`${boxed ? "boxed-" : ""}${a.id}-${r}`];
         return !!own && (own.figure || own.box || own.cib);
@@ -66,7 +72,7 @@ function App() {
   );
 
   return <TooltipProvider><UpdateChecker /><div className="min-h-screen bg-background"><div className="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-8 sm:px-6">
-    <header className="flex items-start justify-between gap-4"><div><h1 className="text-2xl font-bold tracking-tight"><span className="text-primary">Triforce</span> Checklist</h1><p className="text-sm text-muted-foreground">Ma collection The Legend of Zelda</p></div><div className="flex gap-2"><CollectionMenu /><ThemeToggle /></div></header>
+    <header className="flex items-start justify-between gap-4"><div><h1 className="text-2xl font-bold tracking-tight"><span className="text-primary">Triforce</span> Checklist</h1><p className="text-sm text-muted-foreground">Ma collection The Legend of Zelda</p></div><div className="flex gap-2"><Button variant="outline" size="icon" title="Statistiques et PDF" onClick={() => setDashboardOpen(true)}><BarChart3 className="size-4" /></Button><CollectionMenu /><ThemeToggle /></div></header>
     <FilterBar />
     <Tabs value={category} onValueChange={(v) => setCategory(v as CategoryTab)}>
       <TabsList className="grid !h-auto w-full grid-cols-3 gap-1.5 rounded-xl border border-border/60 bg-card/70 p-1.5 shadow-sm">
@@ -87,7 +93,7 @@ function App() {
         </Tabs>
       </TabsContent>
     </Tabs>
-  </div></div></TooltipProvider>;
+  </div></div><CollectionDashboard open={dashboardOpen} onClose={() => setDashboardOpen(false)} /></TooltipProvider>;
 }
 
 export default App;
