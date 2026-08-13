@@ -1,5 +1,5 @@
 import { AMIIBO } from "@/data/amiibo";
-import { AMIIBO_PACKAGE_COVERS } from "@/data/amiiboPackageCovers";
+import { AMIIBO_PACKAGE_COVERS, hasRegionalAmiiboPackageCover } from "@/data/amiiboPackageCovers";
 import { groupAmiiboBySeries, normalize } from "@/lib/collection";
 import { useFilters } from "@/store/useFilters";
 import { useCollection } from "@/store/useCollection";
@@ -13,7 +13,9 @@ export function AmiiboView({ region, boxed = false }: { region: Region; boxed?: 
   const query = normalize(search.trim());
   const regional = AMIIBO.filter((a) =>
     (!a.regions || a.regions.includes(region)) &&
-    (boxed ? (!a.boxedRegions || a.boxedRegions.includes(region)) : !a.pack),
+    (boxed
+      ? (!a.boxedRegions || a.boxedRegions.includes(region)) && hasRegionalAmiiboPackageCover(a.id, region)
+      : !a.pack),
   );
   const searched = query ? regional.filter((a) => normalize(a.name).includes(query) || normalize(a.series).includes(query)) : regional;
   const filtered = searched.filter((item) => {

@@ -7,6 +7,9 @@ export const SPECIAL_CONSOLES: SpecialConsole[] = [
   { id: "console-mini-classics-zelda-pal", name: "Nintendo Mini Classics – Zelda", family: "Nintendo Mini Classics", region: "PAL", year: 1998, notes: "Réédition porte-clés sous licence, distribuée par Stadlbauer." },
   { id: "console-mini-classics-zelda-2007-pal", name: "Nintendo Mini Classics – Zelda (réédition)", family: "Nintendo Mini Classics", region: "PAL", year: 2007, notes: "Nouvel emballage avec illustrations de Four Swords Adventures." },
 
+  { id: "console-gb-la-na", name: "Game Boy – Link's Awakening Bundle", family: "Game Boy", region: "NA", year: 1993, notes: "Ensemble officiel avec Game Boy standard et Link's Awakening; le matériel lui-même n'est pas décoré Zelda." },
+  { id: "console-gb-la-fr-pal", name: "Game Boy – Link's Awakening French Bundle", family: "Game Boy", region: "PAL", year: 1993, notes: "Ensemble français officiel avec Game Boy standard et Link's Awakening." },
+
   { id: "console-gcn-ww-na", name: "Nintendo GameCube – The Wind Waker Bundle", family: "Nintendo GameCube", region: "NA", year: 2003, notes: "Bundle officiel; la console argentée n'a pas de décoration Zelda." },
   { id: "console-gcn-ww-pal", name: "Nintendo GameCube Platinum – The Wind Waker Pak", family: "Nintendo GameCube", region: "PAL", year: 2003, notes: "Bundle officiel européen; matériel standard argenté." },
   { id: "console-gba-sp-minish-pal", name: "Game Boy Advance SP – The Minish Cap", family: "Game Boy Advance", region: "PAL", year: 2004, notes: "Console dorée avec Triforce, vendue avec The Minish Cap." },
@@ -48,6 +51,8 @@ const PRODUCT_PHOTO = {
 };
 
 export const SPECIAL_CONSOLE_COVERS: Record<string, string> = {
+  "console-gb-la-na": "/images/library/consoles/56bf3378bd37e6e17179.webp",
+  "console-gb-la-fr-pal": "/images/library/consoles/11506dd73e09ee6eea25.webp",
   "console-gw-zelda-na": "/images/library/consoles/34b4471e43cfb844df00.webp",
   "console-gw-zelda-pal": "/images/library/consoles/34b4471e43cfb844df00.webp",
   "console-mini-classics-zelda-na": "/images/library/consoles/a20738a9393cc639a195.webp",

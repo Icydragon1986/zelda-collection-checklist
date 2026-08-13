@@ -3,7 +3,8 @@ import { AMIIBO_COVERS } from "./amiiboCovers";
 export const AMIIBO_PACKAGE_COVERS: Record<string, string> = {
   ...AMIIBO_COVERS,
 
-  "amiibo-smash-link-NA": "/images/amiibo-boxed/smash/link-na.webp",
+  "amiibo-smash-link-NA": "/images/library/amiibo-packages/3cc402b946d1765530bd.webp",
+  "amiibo-smash-link-PAL": "/images/library/amiibo-packages/6eff4df9e348b9592419.webp",
   "amiibo-smash-link-JP": "/images/amiibo-boxed/smash/link-jp.webp",
   "amiibo-smash-zelda-NA": "/images/amiibo-boxed/smash/zelda-na.webp",
   "amiibo-smash-zelda-PAL": "/images/amiibo-boxed/smash/zelda-pal.webp",
@@ -17,8 +18,8 @@ export const AMIIBO_PACKAGE_COVERS: Record<string, string> = {
   "amiibo-smash-ganondorf-NA": "/images/amiibo-boxed/smash/ganondorf-na.webp",
   "amiibo-smash-ganondorf-PAL": "/images/amiibo-boxed/smash/ganondorf-pal.webp",
   "amiibo-smash-ganondorf-JP": "/images/amiibo-boxed/smash/ganondorf-jp.webp",
-  "amiibo-smash-young-link-NA": "/images/amiibo-boxed/smash/young-link-na.webp",
-  "amiibo-smash-young-link-PAL": "/images/amiibo-boxed/smash/young-link-pal.webp",
+  "amiibo-smash-young-link-NA": "/images/library/amiibo-packages/076afe896c6a149600f4.webp",
+  "amiibo-smash-young-link-PAL": "/images/library/amiibo-packages/2145760f06efe149a6bb.webp",
 
   "amiibo-30th-link-8bit-NA": "/images/library/amiibo-packages/336250f424132d32f3ac.webp",
   "amiibo-30th-link-8bit-PAL": "/images/library/amiibo-packages/e5058f34d4efe2e3310d.webp",
@@ -79,6 +80,7 @@ export const AMIIBO_PACKAGE_COVERS: Record<string, string> = {
   "amiibo-ss-zelda-loftwing-PAL": "/images/library/amiibo-packages/f925e6989b2a737b372f.webp",
   "amiibo-totk-link-JP": "/images/library/amiibo-packages/12fe98ce1c0a08babbe7.webp",
   "amiibo-totk-link-NA": "/images/amiibo-boxed/totk/link-na.webp",
+  "amiibo-totk-link-PAL": "/images/library/amiibo-packages/78f7d03b27de23be6cc0.webp",
   "amiibo-totk-zelda-NA": "/images/amiibo-boxed/totk/zelda-na.webp",
   "amiibo-totk-riju-NA": "/images/amiibo-boxed/totk/riju-na.webp",
   "amiibo-totk-sidon-NA": "/images/amiibo-boxed/totk/sidon-na.webp",
@@ -87,3 +89,10 @@ export const AMIIBO_PACKAGE_COVERS: Record<string, string> = {
   "amiibo-totk-ganondorf-NA": "/images/amiibo-boxed/totk/ganondorf-na.webp",
   "amiibo-totk-mineru-NA": "/images/amiibo-boxed/totk/mineru-na.webp",
 };
+
+// Une entrée sans suffixe régional provient de la photo de la figurine et ne
+// doit jamais servir de faux emballage. La section « en boîte » utilise cette
+// vérification afin de ne montrer que les conditionnements réellement archivés.
+export function hasRegionalAmiiboPackageCover(id: string, region: string): boolean {
+  return Object.prototype.hasOwnProperty.call(AMIIBO_PACKAGE_COVERS, `${id}-${region}`);
+}
