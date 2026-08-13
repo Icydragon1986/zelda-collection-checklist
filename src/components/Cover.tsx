@@ -148,10 +148,21 @@ export function Cover({
           role="dialog"
           aria-modal="true"
           aria-label={`Aperçu de ${alt}`}
-          onClick={() => setPreviewOpen(false)}
+          onClick={(event) => {
+            event.stopPropagation();
+            setPreviewOpen(false);
+          }}
           className="fixed inset-0 z-[100] flex cursor-zoom-out items-center justify-center bg-black/85 p-4 backdrop-blur-sm sm:p-8"
         >
-          <button type="button" aria-label="Fermer" onClick={() => setPreviewOpen(false)} className="absolute top-4 right-4 rounded-full bg-white/15 p-2 text-white hover:bg-white/25">
+          <button
+            type="button"
+            aria-label="Fermer"
+            onClick={(event) => {
+              event.stopPropagation();
+              setPreviewOpen(false);
+            }}
+            className="absolute top-4 right-4 z-10 rounded-full bg-white/15 p-2 text-white hover:bg-white/25"
+          >
             <X className="size-6" />
           </button>
           <div className="flex max-h-full max-w-full flex-col items-center gap-3" onClick={(event) => event.stopPropagation()}>
