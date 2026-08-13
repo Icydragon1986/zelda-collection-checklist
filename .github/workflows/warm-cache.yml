@@ -1,0 +1,47 @@
+name: Préparer la prochaine compilation
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "src-tauri/**"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: warm-windows-main
+  cancel-in-progress: true
+
+env:
+  CARGO_INCREMENTAL: "0"
+  SCCACHE_GHA_ENABLED: "true"
+  RUSTC_WRAPPER: "sccache"
+
+jobs:
+  warm-windows:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Activer le cache de compilation Rust
+        uses: mozilla-actions/sccache-action@v0.0.11
+      - name: Installer les dépendances
+        run: npm ci --prefer-offline --no-audit
+      - name: Compiler l'interface
+        run: npm run build
+      - name: Précompiler l'application Windows
+        run: cargo build --manifest-path src-tauri/Cargo.toml --release
+      - name: Afficher l'efficacité du cache
+        run: sccache --show-stats

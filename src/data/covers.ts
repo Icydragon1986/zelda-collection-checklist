@@ -1,4 +1,4 @@
-// Jaquettes de jeux archivées localement dans public/images/library.
+// Jaquettes de jeux distribuées comme ressources locales Tauri.
 // Généré par scripts/match-covers.mjs — voir ce script pour régénérer/étendre la table.
 //
 // Les éditions spéciales proviennent principalement des galeries Zelda Wiki.

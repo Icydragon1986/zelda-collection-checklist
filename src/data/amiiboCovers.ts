@@ -1,4 +1,4 @@
-// Images amiibo archivées localement dans public/images/library.
+// Images amiibo distribuées comme ressources locales Tauri.
 // Généré par scripts/amiibo-map.mjs — voir ce script pour régénérer/étendre la table.
 
 export const AMIIBO_COVERS: Record<string, string> = {

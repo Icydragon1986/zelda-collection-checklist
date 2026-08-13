@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ImagePlus, Maximize2, X } from "lucide-react";
+import { convertFileSrc } from "@tauri-apps/api/core";
+import { resolveResource } from "@tauri-apps/api/path";
 import { cn } from "@/lib/utils";
 import { useCollection } from "@/store/useCollection";
 
@@ -22,6 +24,7 @@ export function Cover({
   const clearCustomCover = useCollection((s) => s.clearCustomCover);
   const [remoteFailed, setRemoteFailed] = useState(false);
   const [customSrc, setCustomSrc] = useState<string | undefined>();
+  const [catalogSrc, setCatalogSrc] = useState<string | undefined>(src);
   const [previewOpen, setPreviewOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -31,17 +34,43 @@ export function Cover({
       setCustomSrc(undefined);
       return;
     }
-    import("@tauri-apps/api/core")
-      .then(({ convertFileSrc }) => {
-        if (!cancelled) setCustomSrc(convertFileSrc(customPath));
-      })
-      .catch(() => {});
+    try {
+      if (!cancelled) setCustomSrc(convertFileSrc(customPath));
+    } catch {
+      setCustomSrc(undefined);
+    }
     return () => {
       cancelled = true;
     };
   }, [customPath]);
 
-  const resolvedSrc = customSrc ?? (!remoteFailed ? src : undefined);
+  useEffect(() => {
+    let cancelled = false;
+    setRemoteFailed(false);
+    if (!src?.startsWith("/images/")) {
+      setCatalogSrc(src);
+      return;
+    }
+
+    const relativePath = src.replace(/^\/+/, "");
+    if (import.meta.env.DEV) {
+      setCatalogSrc(`${import.meta.env.VITE_RESOURCE_IMAGE_BASE}/${relativePath.slice("images/".length)}`);
+      return;
+    }
+
+    resolveResource(relativePath)
+      .then((resourcePath) => {
+        if (!cancelled) setCatalogSrc(convertFileSrc(resourcePath));
+      })
+      .catch(() => {
+        if (!cancelled) setCatalogSrc(src);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [src]);
+
+  const resolvedSrc = customSrc ?? (!remoteFailed ? catalogSrc : undefined);
   const showImage = !!resolvedSrc;
 
   useEffect(() => {

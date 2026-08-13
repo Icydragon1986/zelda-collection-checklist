@@ -9,30 +9,44 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_INCREMENTAL: "0"
+  SCCACHE_GHA_ENABLED: "true"
+  RUSTC_WRAPPER: "sccache"
+
 jobs:
   release-windows:
     runs-on: windows-latest
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
       - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: "src-tauri -> target"
-          cache-on-failure: true
+      - name: Activer le cache de compilation Rust
+        uses: mozilla-actions/sccache-action@v0.0.11
       - name: Installer les dépendances
-        run: npm ci
-      - name: Compiler et publier
-        uses: tauri-apps/tauri-action@v0
+        run: npm ci --prefer-offline --no-audit
+      - name: Compiler et publier l'installateur NSIS
+        uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
         with:
           tagName: v__VERSION__
           releaseName: "Zelda Collection Checklist v__VERSION__"
-          releaseBody: "Audit amiibo régional : 15 emballages PAL et japonais ajoutés en haute qualité, dont Zelda, Ganondorf, les quatre Sages, Link's Awakening et Zelda & Loftwing. Les visuels restent entièrement locaux et consultables hors ligne."
+          releaseBody: "Nouvelle version de Zelda Collection Checklist. L'installateur NSIS et la mise à jour automatique sont signés et publiés ci-dessous."
+          generateReleaseNotes: true
           releaseDraft: false
           prerelease: false
+          args: --bundles nsis
+          updaterJsonPreferNsis: true
+          retryAttempts: 2
+      - name: Afficher l'efficacité du cache
+        run: sccache --show-stats

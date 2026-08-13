@@ -37,4 +37,18 @@ trois régions, les amiibo réellement vendus en boîte et la liste des visuels
 officiels en attente. En mode développement, l'application signale automatiquement
 dans la console les identifiants en double ou les régions invalides.
 
+### Publication Windows
+
+Une modification envoyée sur `main` précompile automatiquement les dépendances
+Rust avec `sccache`. Lorsqu'un tag `vX.Y.Z` est ensuite envoyé, GitHub ne fabrique
+que l'installateur NSIS utilisé par l'application et son fichier de mise à jour
+signé. Le MSI WiX redondant n'est plus construit.
+
+L'installateur NSIS utilise la compression ZLIB, plus rapide à produire que la
+compression LZMA, avec une différence de taille minime pour cette application.
+
+La bibliothèque de jaquettes est distribuée comme ressource externe sous
+`src-tauri/resources/images`. Elle reste installée localement pour fonctionner
+hors ligne, sans être recompilée dans l'exécutable Rust à chaque version.
+
 Les images et marques appartiennent à leurs détenteurs respectifs. Ce projet personnel n’est ni affilié ni approuvé par Nintendo.

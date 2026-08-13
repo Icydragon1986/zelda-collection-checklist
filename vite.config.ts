@@ -5,6 +5,7 @@ import path from "node:path";
 
 // @ts-expect-error process is a nodejs global
 const host = process.env.TAURI_DEV_HOST;
+const resourceImageBase = `/@fs/${path.resolve(__dirname, "./src-tauri/resources/images").replace(/\\/g, "/")}`;
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
@@ -14,6 +15,10 @@ export default defineConfig(async () => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+
+  define: {
+    "import.meta.env.VITE_RESOURCE_IMAGE_BASE": JSON.stringify(resourceImageBase),
   },
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
