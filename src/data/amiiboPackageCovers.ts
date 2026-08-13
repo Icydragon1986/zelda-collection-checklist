@@ -1,4 +1,5 @@
 import { AMIIBO_COVERS } from "./amiiboCovers";
+import { ADDITIONAL_AMIIBO_PACKAGE_COVERS } from "./catalogAdditions";
 
 export const AMIIBO_PACKAGE_COVERS: Record<string, string> = {
   ...AMIIBO_COVERS,
@@ -103,6 +104,9 @@ export const AMIIBO_PACKAGE_COVERS: Record<string, string> = {
   "amiibo-totk-ganondorf-PAL": "/images/amiibo-boxed/totk/ganondorf-pal.webp",
   "amiibo-totk-ganondorf-JP": "/images/amiibo-boxed/totk/ganondorf-jp.webp",
   "amiibo-totk-mineru-NA": "/images/amiibo-boxed/totk/mineru-na.webp",
+  "amiibo-totk-mineru-PAL": "/images/amiibo-boxed/totk/mineru-pal.webp",
+  "amiibo-totk-mineru-JP": "/images/amiibo-boxed/totk/mineru-jp.webp",
+  ...ADDITIONAL_AMIIBO_PACKAGE_COVERS,
 };
 
 // Une entrée sans suffixe régional provient de la photo de la figurine et ne

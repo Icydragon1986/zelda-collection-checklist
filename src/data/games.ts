@@ -1,4 +1,5 @@
 import type { Game } from "./types";
+import { ADDITIONAL_GAMES } from "./catalogAdditions";
 
 // ---------------------------------------------------------------------------
 // Amérique du Nord
@@ -52,7 +53,8 @@ const NA: Game[] = [
 
   { id: "na-wii-tp", title: "Twilight Princess", console: "Wii", region: "NA", year: 2006, category: "main" },
   { id: "na-wii-tp-nintendo-selects", title: "Twilight Princess – Nintendo Selects", console: "Wii", region: "NA", year: 2011, category: "edition", notes: "Réédition commerciale Nintendo Selects à jaquette distincte." },
-  { id: "na-wii-crossbow-training", title: "Link's Crossbow Training", console: "Wii", region: "NA", year: 2007, category: "spinoff", notes: "Vendu avec le périphérique Wii Zapper." },
+  { id: "na-wii-crossbow-training", title: "Link's Crossbow Training", console: "Wii", region: "NA", year: 2007, category: "spinoff", notes: "Boîtier du jeu inclus dans l'ensemble Wii Zapper d'origine." },
+  { id: "na-wii-crossbow-training-zapper", title: "Link's Crossbow Training – Wii Zapper Bundle", console: "Wii", region: "NA", year: 2007, category: "edition", notes: "Grand emballage nord-américain comprenant le Wii Zapper et le jeu." },
   { id: "na-wii-skyward-sword", title: "Skyward Sword", console: "Wii", region: "NA", year: 2011, category: "main" },
   { id: "na-wii-ss-gold", title: "Skyward Sword – Limited Edition (Wiimote Plus dorée)", console: "Wii", region: "NA", year: 2011, category: "edition", notes: "Wiimote Plus dorée (motif Triforce/blason royal) + CD 25e anniversaire." },
 
@@ -120,7 +122,6 @@ const PAL: Game[] = [
   { id: "pal-gbc-oracles-limited", title: "Oracle of Ages & Oracle of Seasons – Limited Edition", console: "Game Boy Color", region: "PAL", year: 2001, category: "edition", notes: "Coffret européen limité réunissant les deux jeux et des objets promotionnels." },
 
   { id: "pal-n64-oot", title: "Ocarina of Time", console: "Nintendo 64", region: "PAL", year: 1998, category: "main" },
-  { id: "pal-n64-oot-special-value", title: "Ocarina of Time – Special Value Pak", console: "Nintendo 64", region: "PAL", year: 1998, category: "edition" },
   { id: "pal-n64-oot-aus-gold", title: "Ocarina of Time – Édition australienne (cartouche dorée)", console: "Nintendo 64", region: "PAL", year: 1998, category: "edition", notes: "Variante commerciale Australie/Nouvelle-Zélande : cartouche dorée et boîte PAL australienne dorée, contrairement à la cartouche grise de l'édition européenne courante." },
   { id: "pal-n64-mm", title: "Majora's Mask", console: "Nintendo 64", region: "PAL", year: 2000, category: "main" },
   { id: "pal-n64-mm-adventure-set", title: "Majora's Mask – Limited Edition Adventure Set", console: "Nintendo 64", region: "PAL", year: 2000, category: "edition" },
@@ -134,6 +135,7 @@ const PAL: Game[] = [
   { id: "pal-gc-oot-mq", title: "Ocarina of Time / Master Quest", console: "GameCube", region: "PAL", year: 2003, category: "compilation", notes: "Disque bonus lié à la précommande de The Wind Waker." },
   { id: "pal-gc-collectors-edition", title: "The Legend of Zelda: Collector's Edition", console: "GameCube", region: "PAL", year: 2003, category: "compilation", notes: "Distribué en bundle avec Mario Kart: Double Dash!!." },
   { id: "pal-gc-wind-waker", title: "The Wind Waker", console: "GameCube", region: "PAL", year: 2003, category: "main" },
+  { id: "pal-gc-wind-waker-limited", title: "The Wind Waker – Limited Edition (Ocarina of Time / Master Quest)", console: "GameCube", region: "PAL", year: 2003, category: "edition", notes: "Édition PAL à deux disques : The Wind Waker avec le disque bonus Ocarina of Time / Master Quest. Le disque bonus PAL n'a pas été vendu séparément." },
   { id: "pal-gc-wind-waker-players-choice", title: "The Wind Waker – Player's Choice", console: "GameCube", region: "PAL", year: 2004, category: "edition" },
   { id: "pal-gc-fs-adventures", title: "Four Swords Adventures", console: "GameCube", region: "PAL", year: 2005, category: "main", notes: "N'inclut pas le mode bonus japonais \"Tetra's Trackers\"." },
   { id: "pal-gc-fs-adventures-cable", title: "Four Swords Adventures – Game Boy Advance Cable Bundle", console: "GameCube", region: "PAL", year: 2005, category: "edition", notes: "Coffret officiel comprenant le jeu et un câble Nintendo GameCube–Game Boy Advance." },
@@ -146,13 +148,16 @@ const PAL: Game[] = [
 
   { id: "pal-wii-tp", title: "Twilight Princess", console: "Wii", region: "PAL", year: 2006, category: "main" },
   { id: "pal-wii-tp-nintendo-selects", title: "Twilight Princess – Nintendo Selects", console: "Wii", region: "PAL", year: 2011, category: "edition" },
-  { id: "pal-wii-crossbow-training", title: "Link's Crossbow Training", console: "Wii", region: "PAL", year: 2007, category: "spinoff", notes: "Vendu avec le périphérique Wii Zapper." },
+  { id: "pal-wii-crossbow-training", title: "Link's Crossbow Training", console: "Wii", region: "PAL", year: 2007, category: "spinoff", notes: "Boîtier du jeu inclus dans l'ensemble Wii Zapper d'origine." },
+  { id: "pal-wii-crossbow-training-zapper-au", title: "Link's Crossbow Training – Wii Zapper Bundle (Australie)", console: "Wii", region: "PAL", year: 2007, category: "edition", notes: "Grand emballage australien comprenant le Wii Zapper et le jeu." },
   { id: "pal-wii-skyward-sword", title: "Skyward Sword", console: "Wii", region: "PAL", year: 2011, category: "main", notes: "Première région mondiale à recevoir le jeu." },
   { id: "pal-wii-ss-gold", title: "Skyward Sword – Limited Edition (Wiimote Plus dorée)", console: "Wii", region: "PAL", year: 2011, category: "edition", notes: "Wiimote Plus dorée + CD 25e anniversaire." },
 
   { id: "pal-3ds-oot3d", title: "Ocarina of Time 3D", console: "Nintendo 3DS", region: "PAL", year: 2011, category: "main" },
+  { id: "pal-3ds-oot3d-ocarina-au", title: "Ocarina of Time 3D – Ocarina Edition (Australie)", console: "Nintendo 3DS", region: "PAL", year: 2011, category: "edition", notes: "Coffret australien EB Games avec jeu physique et réplique d'ocarina." },
   { id: "pal-3ds-oot3d-nintendo-selects", title: "Ocarina of Time 3D – Nintendo Selects", console: "Nintendo 3DS", region: "PAL", year: 2016, category: "edition" },
   { id: "pal-3ds-albw", title: "A Link Between Worlds", console: "Nintendo 3DS", region: "PAL", year: 2013, category: "main" },
+  { id: "pal-3ds-albw-collectors", title: "A Link Between Worlds – Collector's Edition (GAME)", console: "Nintendo 3DS", region: "PAL", year: 2013, category: "edition", notes: "Exclusivité GAME : jeu physique, coffre musical porte-cartouche, poster et code de téléchargement Link's Awakening DX." },
   { id: "pal-3ds-albw-nintendo-selects", title: "A Link Between Worlds – Nintendo Selects", console: "Nintendo 3DS", region: "PAL", year: 2016, category: "edition" },
   { id: "pal-3ds-mm3d", title: "Majora's Mask 3D", console: "Nintendo 3DS", region: "PAL", year: 2015, category: "main" },
   { id: "pal-3ds-mm3d-special", title: "Majora's Mask 3D – Special Edition", console: "Nintendo 3DS", region: "PAL", year: 2015, category: "edition", notes: "Boîtier SteelBook + pin's + poster recto-verso (contenu différent de l'édition NA, pas de figurine)." },
@@ -230,12 +235,14 @@ const JP: Game[] = [
 
   { id: "jp-wii-tp", title: "Twilight Princess", console: "Wii", region: "JP", year: 2006, category: "main" },
   { id: "jp-wii-crossbow-training", title: "Wii Zapper: Link no Bowgun Training", console: "Wii", region: "JP", year: 2007, category: "spinoff" },
+  { id: "jp-wii-crossbow-training-zapper", title: "Wii Zapper: Link no Bowgun Training – Wii Zapper Bundle", console: "Wii", region: "JP", year: 2007, category: "edition", notes: "Grand emballage japonais comprenant le Wii Zapper et le jeu." },
   { id: "jp-wii-skyward-sword", title: "Skyward Sword", console: "Wii", region: "JP", year: 2011, category: "main" },
   { id: "jp-wii-ss-gold", title: "Skyward Sword – Wii Remote Plus Bundle", console: "Wii", region: "JP", year: 2011, category: "edition", notes: "Coffret japonais avec Wii Remote Plus dorée." },
   { id: "jp-wii-ss-white", title: "Skyward Sword – White Wii Remote Plus Bundle", console: "Wii", region: "JP", year: 2011, category: "edition", notes: "Variante japonaise officielle avec Wii Remote Plus blanche." },
 
   { id: "jp-3ds-oot3d", title: "Toki no Ocarina 3D", console: "Nintendo 3DS", region: "JP", year: 2011, category: "main" },
   { id: "jp-3ds-oot3d-happy-price", title: "Toki no Ocarina 3D – Happy Price Selection", console: "Nintendo 3DS", region: "JP", year: 2016, category: "edition" },
+  { id: "jp-3ds-oot3d-fea-double-pack", title: "Toki no Ocarina 3D + Fire Emblem Awakening – Happy Price Double Pack", console: "Nintendo 3DS", region: "JP", year: 2016, category: "edition", notes: "Coffret japonais réunissant les deux jeux physiques Happy Price Selection." },
   { id: "jp-3ds-albw", title: "Kamigami no Triforce 2", console: "Nintendo 3DS", region: "JP", year: 2013, category: "main" },
   { id: "jp-3ds-mm3d", title: "Mujura no Kamen 3D", console: "Nintendo 3DS", region: "JP", year: 2015, category: "main" },
   { id: "jp-3ds-tfh", title: "Toraifōsu Sanjūshi", console: "Nintendo 3DS", region: "JP", year: 2015, category: "main" },
@@ -252,9 +259,9 @@ const JP: Game[] = [
   { id: "jp-wiiu-botw", title: "Breath of the Wild", console: "Wii U", region: "JP", year: 2017, category: "main" },
 
   { id: "jp-switch-botw", title: "Breath of the Wild", console: "Nintendo Switch", region: "JP", year: 2017, category: "main" },
-  { id: "jp-switch-botw-explorers", title: "Breath of the Wild – Explorer's Edition", console: "Nintendo Switch", region: "JP", year: 2017, category: "edition" },
-  { id: "jp-switch-botw-starter", title: "Breath of the Wild – Starter Pack", console: "Nintendo Switch", region: "JP", year: 2018, category: "edition" },
-  { id: "jp-switch-botw-expansion-pass", title: "Breath of the Wild – Expansion Pass Bundle", console: "Nintendo Switch", region: "JP", year: 2017, category: "edition", notes: "Édition physique japonaise regroupant le jeu et le contenu Expansion Pass." },
+  { id: "jp-switch-botw-explorers", title: "Breath of the Wild – Adventure Guidebook & Map Set", console: "Nintendo Switch", region: "JP", year: 2017, category: "edition", notes: "Édition japonaise limitée du 23 novembre 2017 avec guide d'aventure de 88 pages et carte d'Hyrule." },
+  { id: "jp-switch-botw-starter", title: "Breath of the Wild – Adventure Guidebook Set", console: "Nintendo Switch", region: "JP", year: 2018, category: "edition", notes: "Édition japonaise du 9 novembre 2018 avec guide d'aventure, sans la carte du coffret 2017." },
+  { id: "jp-switch-botw-expansion-pass", title: "Breath of the Wild + Expansion Pass", console: "Nintendo Switch", region: "JP", year: 2021, category: "edition", notes: "Édition physique japonaise du 8 octobre 2021 avec le jeu et les deux DLC sur la cartouche." },
   { id: "jp-switch-botw-collectors", title: "Breath of the Wild – Collector's Edition", console: "Nintendo Switch", region: "JP", year: 2017, category: "edition", notes: "amiibo Link (Rider) exclusif + CD bande-son + tapisserie carte du monde." },
   { id: "jp-switch-hw-definitive", title: "Hyrule Warriors: Definitive Edition", console: "Nintendo Switch", region: "JP", year: 2018, category: "spinoff" },
   { id: "jp-switch-cadence", title: "Cadence of Hyrule", console: "Nintendo Switch", region: "JP", year: 2020, category: "spinoff" },
@@ -273,4 +280,4 @@ const JP: Game[] = [
   { id: "jp-switch2-hw-imprisonment-treasure", title: "Hyrule Warriors: Age of Imprisonment – Treasure Box", console: "Nintendo Switch 2", region: "JP", year: 2025, category: "edition", notes: "Écharpe, poster tissu, porte-clés Korok en bois, figurines acryliques, pochettes transparentes. Exclusivité japonaise." },
 ];
 
-export const GAMES: Game[] = [...NA, ...PAL, ...JP];
+export const GAMES: Game[] = [...NA, ...PAL, ...JP, ...ADDITIONAL_GAMES];

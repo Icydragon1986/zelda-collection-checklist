@@ -13,10 +13,7 @@ export interface MissingVisual {
   reason: string;
 }
 
-export const MISSING_VISUALS: MissingVisual[] = [
-  { id: "amiibo-totk-mineru-PAL", label: "Mineru's Construct — amiibo en boîte", region: "PAL", reason: "Emballage officiel pas encore publié." },
-  { id: "amiibo-totk-mineru-JP", label: "Mineru's Construct — amiibo en boîte", region: "JP", reason: "Emballage officiel pas encore publié." },
-];
+export const MISSING_VISUALS: MissingVisual[] = [];
 
 export function boxedAmiibo(region: Region) {
   return AMIIBO.filter((item) =>

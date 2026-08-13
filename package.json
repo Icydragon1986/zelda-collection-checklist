@@ -1,12 +1,13 @@
 {
   "name": "zelda-collection-checklist",
   "private": true,
-  "version": "0.9.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "audit:catalog": "node scripts/audit-catalog.mjs",
+    "catalog:add": "node scripts/catalog-add.mjs",
     "check": "npm run audit:catalog && npm run build",
     "preview": "vite preview",
     "tauri": "tauri"

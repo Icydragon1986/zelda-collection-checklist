@@ -1,3 +1,5 @@
+import { ADDITIONAL_GAME_COVERS } from "./catalogAdditions";
+
 // Jaquettes de jeux distribuées comme ressources locales Tauri.
 // Généré par scripts/match-covers.mjs — voir ce script pour régénérer/étendre la table.
 //
@@ -18,7 +20,6 @@ const EDITION_COVERS: Record<string, string> = {
   "na-gc-fs-adventures-cable": "/images/library/games/93cbb42b9a6017ce9349.webp",
   "pal-gb-la-nintendo-classics": "/images/library/games/bdd6ec8047884be9032d.webp",
   "pal-gbc-oracles-limited": "/images/library/games/85db8ab81e0aa3fcfaff.webp",
-  "pal-n64-oot-special-value": "/images/library/games/8f5d6bf6f49a0cf74785.webp",
   "pal-n64-mm-adventure-set": "/images/library/games/e54aa0d5a6a1594eff7e.webp",
   "pal-gba-minish-cap-adventure-set": "/images/library/games/cfc20420517bd9d256d6.webp",
   "pal-gc-fs-adventures-cable": "/images/library/games/5641df7993b964118725.webp",
@@ -90,6 +91,13 @@ const EDITION_COVERS: Record<string, string> = {
   "na-wiiu-hw-limited": "/images/library/games/779409473022c98c19b2.webp",
   "jp-switch-hw-age-calamity-treasure": "/images/library/games/a011d4bc121629013914.webp",
   "jp-switch2-hw-imprisonment-treasure": "/images/library/games/52cba9a7d635b4d1562f.webp",
+  "pal-gc-wind-waker-limited": "/images/library/games/tww-pal-limited.webp",
+  "na-wii-crossbow-training-zapper": "/images/library/games/crossbow-na-zapper-bundle.webp",
+  "pal-wii-crossbow-training-zapper-au": "/images/library/games/crossbow-pal-zapper-bundle.webp",
+  "jp-wii-crossbow-training-zapper": "/images/library/games/crossbow-jp-zapper-bundle.webp",
+  "pal-3ds-oot3d-ocarina-au": "/images/library/games/oot3d-pal-ocarina-edition.webp",
+  "pal-3ds-albw-collectors": "/images/library/games/albw-pal-collectors-edition.webp",
+  "jp-3ds-oot3d-fea-double-pack": "/images/library/games/oot3d-jp-fe-awakening-double-pack.webp",
 
   // Jeux Switch / Switch 2 / CD-i standards (aucune source dans libretro-thumbnails,
   // la Switch n'y étant pas cataloguée) — trouvés sur Zelda Wiki également.
@@ -134,7 +142,6 @@ const EDITION_COVERS: Record<string, string> = {
 };
 
 export const GAME_COVERS: Record<string, string> = {
-  ...EDITION_COVERS,
   "jp-3ds-albw": "/images/library/games/f617a500f5904a043287.webp",
   "jp-3ds-hw-legends": "/images/library/games/584fb9082efdaf4d0343.webp",
   "jp-3ds-mm3d": "/images/library/games/55b06a6110e261eaef09.webp",
@@ -239,4 +246,5 @@ export const GAME_COVERS: Record<string, string> = {
   // Les associations vérifiées manuellement doivent primer sur les résultats
   // automatiques de libretro-thumbnails (région et édition exactes).
   ...EDITION_COVERS,
+  ...ADDITIONAL_GAME_COVERS,
 };

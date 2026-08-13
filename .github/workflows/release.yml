@@ -8,6 +8,9 @@ on:
 
 permissions:
   contents: write
+  id-token: write
+  attestations: write
+  artifact-metadata: write
 
 concurrency:
   group: release-${{ github.ref }}
@@ -52,3 +55,26 @@ jobs:
           retryAttempts: 2
       - name: Afficher l'efficacité du cache
         run: sccache --show-stats
+      - name: Générer les sommes SHA-256
+        shell: pwsh
+        run: |
+          $bundlePath = Join-Path $env:GITHUB_WORKSPACE "src-tauri/target/release/bundle/nsis"
+          $files = Get-ChildItem -LiteralPath $bundlePath -File |
+            Where-Object { $_.Name -like "*-setup.exe" -or $_.Name -like "*.nsis.zip" -or $_.Name -like "*.sig" } |
+            Sort-Object Name
+          if (-not $files) { throw "Aucun artefact NSIS trouvé pour calculer les sommes SHA-256." }
+          $lines = $files | ForEach-Object {
+            "{0}  {1}" -f (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name
+          }
+          [IO.File]::WriteAllLines((Join-Path $env:GITHUB_WORKSPACE "SHA256SUMS.txt"), $lines, [Text.UTF8Encoding]::new($false))
+      - name: Publier les sommes SHA-256
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload $env:GITHUB_REF_NAME "$env:GITHUB_WORKSPACE/SHA256SUMS.txt" --clobber
+      - name: Attester la provenance des exécutables
+        uses: actions/attest@v4
+        with:
+          subject-path: |
+            src-tauri/target/release/bundle/nsis/*-setup.exe
+            src-tauri/target/release/bundle/nsis/*.nsis.zip

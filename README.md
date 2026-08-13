@@ -8,6 +8,8 @@ Elle permet de suivre les jeux, variantes physiques, éditions spéciales, conso
 
 Téléchargez le fichier `setup.exe` de la [dernière version](https://github.com/icydragon1986/zelda-collection-checklist/releases/latest). L’application vérifie ensuite automatiquement si une nouvelle version est disponible.
 
+Les versions comprennent également des sommes SHA-256 et une attestation de provenance GitHub. Consultez [la procédure de vérification](docs/verify-release.md).
+
 ## Fonctions principales
 
 - listes séparées par catégorie et région;
@@ -36,6 +38,10 @@ npm run tauri dev
 Avant une publication, `npm run check` valide automatiquement les identifiants,
 les régions, les associations d'images et les ressources locales, puis compile
 l'interface.
+
+Pour un ajout futur, `npm run catalog:add -- --help` affiche la commande rapide
+qui convertit l'image, ajoute la fiche et relance l'audit automatiquement. Les
+exemples complets sont dans [le guide d'ajout](docs/adding-catalog-items.md).
 
 Le catalogue central est exposé par `src/data/catalog.ts`. Ce module regroupe les
 trois régions, les amiibo réellement vendus en boîte et la liste des visuels

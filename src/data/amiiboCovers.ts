@@ -1,3 +1,5 @@
+import { ADDITIONAL_AMIIBO_COVERS } from "./catalogAdditions";
+
 // Images amiibo distribuées comme ressources locales Tauri.
 // Généré par scripts/amiibo-map.mjs — voir ce script pour régénérer/étendre la table.
 
@@ -39,4 +41,5 @@ export const AMIIBO_COVERS: Record<string, string> = {
   "amiibo-totk-yunobo": "/images/library/amiibo-figures/25bbf69009c5c1a18dcf.webp",
   "amiibo-totk-zelda": "/images/library/amiibo-figures/4ad2e1cbc95293392cb9.webp",
   "amiibo-tp-wolf-link": "/images/library/amiibo-figures/1d18295b15273909dca1.webp",
+  ...ADDITIONAL_AMIIBO_COVERS,
 };

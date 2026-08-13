@@ -1,6 +1,7 @@
 import type { SpecialConsole } from "./types";
+import { ADDITIONAL_CONSOLE_COVERS, ADDITIONAL_SPECIAL_CONSOLES } from "./catalogAdditions";
 
-export const SPECIAL_CONSOLES: SpecialConsole[] = [
+const BASE_SPECIAL_CONSOLES: SpecialConsole[] = [
   { id: "console-gw-zelda-na", name: "Zelda Game & Watch (ZL-65)", family: "Game & Watch", region: "NA", year: 1989, notes: "Console portable Nintendo à double écran." },
   { id: "console-gw-zelda-pal", name: "Zelda Game & Watch (ZL-65)", family: "Game & Watch", region: "PAL", year: 1992, notes: "Commercialisation européenne de la console à double écran." },
   { id: "console-mini-classics-zelda-na", name: "Nintendo Mini Classics – Zelda", family: "Nintendo Mini Classics", region: "NA", year: 1998, notes: "Réédition porte-clés sous licence, distribuée par Toymax." },
@@ -10,8 +11,15 @@ export const SPECIAL_CONSOLES: SpecialConsole[] = [
   { id: "console-gb-la-na", name: "Game Boy – Link's Awakening Bundle", family: "Game Boy", region: "NA", year: 1993, notes: "Ensemble officiel avec Game Boy standard et Link's Awakening; le matériel lui-même n'est pas décoré Zelda." },
   { id: "console-gb-la-fr-pal", name: "Game Boy – Link's Awakening French Bundle", family: "Game Boy", region: "PAL", year: 1993, notes: "Ensemble français officiel avec Game Boy standard et Link's Awakening." },
 
-  { id: "console-gcn-ww-na", name: "Nintendo GameCube – The Wind Waker Bundle", family: "Nintendo GameCube", region: "NA", year: 2003, notes: "Bundle officiel; la console argentée n'a pas de décoration Zelda." },
-  { id: "console-gcn-ww-pal", name: "Nintendo GameCube Platinum – The Wind Waker Pak", family: "Nintendo GameCube", region: "PAL", year: 2003, notes: "Bundle officiel européen; matériel standard argenté." },
+  { id: "console-snes-zelda-na", name: "Super NES Control Set – A Link to the Past Bundle", family: "Super Nintendo", region: "NA", year: 1992, notes: "Ensemble officiel nord-américain avec console, deux manettes et A Link to the Past." },
+  { id: "console-snes-jr-zelda-na", name: "Super NES Jr. – A Link to the Past Bundle (Target)", family: "Super Nintendo", region: "NA", year: 1998, notes: "Ensemble nord-américain Target avec la console SNS-101 et A Link to the Past." },
+  { id: "console-n64-oot-special-value-pal", name: "Nintendo 64 – Zelda Special Value Pak", family: "Nintendo 64", region: "PAL", year: 1998, notes: "Ensemble suédois officiel avec console, Ocarina of Time, Super Mario 64, guide stratégique et épinglette." },
+
+  { id: "console-gcn-ww-na", name: "Nintendo GameCube – The Wind Waker + Metroid Prime Bundle (Mexique)", family: "Nintendo GameCube", region: "NA", year: 2003, notes: "Ensemble NTSC nord-américain vendu au Mexique avec console, The Wind Waker et Metroid Prime." },
+  { id: "console-gcn-collectors-na", name: "Nintendo GameCube – Zelda Collector's Edition Bundle", family: "Nintendo GameCube", region: "NA", year: 2003, notes: "Ensemble nord-américain avec console et disque promotionnel The Legend of Zelda: Collector's Edition." },
+  { id: "console-gcn-ww-pal", name: "Nintendo GameCube Platinum – The Wind Waker Limited Edition Pak", family: "Nintendo GameCube", region: "PAL", year: 2003, notes: "Ensemble européen argenté avec l'édition deux disques de The Wind Waker." },
+  { id: "console-gcn-ww-indigo-pal", name: "Nintendo GameCube Indigo – The Wind Waker Limited Edition Pak", family: "Nintendo GameCube", region: "PAL", year: 2003, notes: "Variante européenne violette avec l'édition deux disques de The Wind Waker." },
+  { id: "console-gcn-ww-black-pal", name: "Nintendo GameCube Jet Black – The Wind Waker Limited Edition Pak", family: "Nintendo GameCube", region: "PAL", year: 2003, notes: "Variante PAL noire avec l'édition deux disques de The Wind Waker." },
   { id: "console-gba-sp-minish-pal", name: "Game Boy Advance SP – The Minish Cap", family: "Game Boy Advance", region: "PAL", year: 2004, notes: "Console dorée avec Triforce, vendue avec The Minish Cap." },
   { id: "console-ds-lite-phantom-na", name: "Nintendo DS Lite Gold – Phantom Hourglass", family: "Nintendo DS", region: "NA", year: 2007, notes: "Console dorée avec Triforce." },
   { id: "console-ds-lite-phantom-pal", name: "Nintendo DS Lite Silver – Phantom Hourglass", family: "Nintendo DS", region: "PAL", year: 2007, notes: "Console argentée avec Link et Ciela; édition limitée à 1 000 exemplaires." },
@@ -44,6 +52,8 @@ export const SPECIAL_CONSOLES: SpecialConsole[] = [
   { id: "console-switch-lite-hyrule-jp", name: "Nintendo Switch Lite – Hyrule Edition", family: "Nintendo Switch", region: "JP", year: 2024, notes: "Photo du produit lorsque l'emballage japonais n'est pas archivé." },
 ];
 
+export const SPECIAL_CONSOLES: SpecialConsole[] = [...BASE_SPECIAL_CONSOLES, ...ADDITIONAL_SPECIAL_CONSOLES];
+
 const PRODUCT_PHOTO = {
   gameWatch2021: "/images/library/consoles/d816713753c55e52e337.webp",
   switchLite: "/images/library/consoles/2a6f0ab4aa13dac52c71.webp",
@@ -58,8 +68,14 @@ export const SPECIAL_CONSOLE_COVERS: Record<string, string> = {
   "console-mini-classics-zelda-na": "/images/library/consoles/a20738a9393cc639a195.webp",
   "console-mini-classics-zelda-pal": "/images/library/consoles/a20738a9393cc639a195.webp",
   "console-mini-classics-zelda-2007-pal": "/images/library/consoles/3bca2a8e087552afe6d4.webp",
-  "console-gcn-ww-na": "/images/library/consoles/0ef2f615c2092ec2400c.webp",
-  "console-gcn-ww-pal": "/images/library/consoles/0ef2f615c2092ec2400c.webp",
+  "console-snes-zelda-na": "/images/library/consoles/snes-zelda-bundle-na.webp",
+  "console-snes-jr-zelda-na": "/images/library/consoles/snes-jr-zelda-bundle-na.webp",
+  "console-n64-oot-special-value-pal": "/images/library/games/8f5d6bf6f49a0cf74785.webp",
+  "console-gcn-ww-na": "/images/library/consoles/gamecube-wind-waker-metroid-na.webp",
+  "console-gcn-collectors-na": "/images/library/consoles/gamecube-collectors-edition-na.webp",
+  "console-gcn-ww-pal": "/images/library/consoles/gamecube-wind-waker-platinum-pal.webp",
+  "console-gcn-ww-indigo-pal": "/images/library/consoles/gamecube-wind-waker-indigo-pal.webp",
+  "console-gcn-ww-black-pal": "/images/library/consoles/gamecube-wind-waker-black-pal.webp",
   "console-gba-sp-minish-pal": "/images/library/consoles/e7d51eedfa9345f333fd.webp",
   "console-ds-lite-phantom-na": "/images/library/consoles/c6045c18de7a684a296e.webp",
   "console-ds-lite-phantom-pal": "/images/library/consoles/81c98ef195bcc9800cf7.webp",
@@ -88,4 +104,5 @@ export const SPECIAL_CONSOLE_COVERS: Record<string, string> = {
   "console-switch-lite-hyrule-na": PRODUCT_PHOTO.switchLite,
   "console-switch-lite-hyrule-pal": PRODUCT_PHOTO.switchLite,
   "console-switch-lite-hyrule-jp": PRODUCT_PHOTO.switchLite,
+  ...ADDITIONAL_CONSOLE_COVERS,
 };

@@ -1,6 +1,7 @@
 import type { Amiibo } from "./types";
+import { ADDITIONAL_AMIIBO } from "./catalogAdditions";
 
-export const AMIIBO: Amiibo[] = [
+const BASE_AMIIBO: Amiibo[] = [
   // Super Smash Bros.
   { id: "amiibo-smash-link", name: "Link", series: "Super Smash Bros.", year: 2014 },
   { id: "amiibo-smash-zelda", name: "Zelda", series: "Super Smash Bros.", year: 2014 },
@@ -57,3 +58,5 @@ export const AMIIBO: Amiibo[] = [
   // Tears of the Kingdom — vague 3
   { id: "amiibo-totk-mineru", name: "Mineru's Construct", series: "Tears of the Kingdom", year: 2026, upcoming: true, notes: "Annoncé pour le 17 septembre 2026 — pas encore sorti." },
 ];
+
+export const AMIIBO: Amiibo[] = [...BASE_AMIIBO, ...ADDITIONAL_AMIIBO];
