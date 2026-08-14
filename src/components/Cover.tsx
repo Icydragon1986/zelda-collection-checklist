@@ -22,14 +22,15 @@ export function Cover({
   const customPath = useCollection((s) => s.customCovers[id]);
   const setCustomCover = useCollection((s) => s.setCustomCover);
   const clearCustomCover = useCollection((s) => s.clearCustomCover);
-  const [remoteFailed, setRemoteFailed] = useState(false);
+  const [failedSrc, setFailedSrc] = useState<string>();
   const [customSrc, setCustomSrc] = useState<string | undefined>();
-  const [catalogSrc, setCatalogSrc] = useState<string | undefined>(src);
+  const [catalogSrc, setCatalogSrc] = useState<string | undefined>(() => src?.startsWith("/images/") ? undefined : src);
   const [previewOpen, setPreviewOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     let cancelled = false;
+    setFailedSrc(undefined);
     if (!customPath) {
       setCustomSrc(undefined);
       return;
@@ -46,12 +47,16 @@ export function Cover({
 
   useEffect(() => {
     let cancelled = false;
-    setRemoteFailed(false);
+    setFailedSrc(undefined);
     if (!src?.startsWith("/images/")) {
       setCatalogSrc(src);
       return;
     }
 
+    // Ne jamais laisser le navigateur demander /images/... directement dans
+    // une build Tauri. Le chemin de ressource doit d'abord être résolu, sinon
+    // un 404 initial peut gagner la course et masquer définitivement l'image.
+    setCatalogSrc(undefined);
     const relativePath = src.replace(/^\/+/, "");
     if (import.meta.env.DEV) {
       setCatalogSrc(`${import.meta.env.VITE_RESOURCE_IMAGE_BASE}/${relativePath.slice("images/".length)}`);
@@ -60,17 +65,24 @@ export function Cover({
 
     resolveResource(relativePath)
       .then((resourcePath) => {
-        if (!cancelled) setCatalogSrc(convertFileSrc(resourcePath));
+        if (!cancelled) {
+          setCatalogSrc(convertFileSrc(resourcePath));
+          setFailedSrc(undefined);
+        }
       })
       .catch(() => {
-        if (!cancelled) setCatalogSrc(src);
+        if (!cancelled) setCatalogSrc(undefined);
       });
     return () => {
       cancelled = true;
     };
   }, [src]);
 
-  const resolvedSrc = customSrc ?? (!remoteFailed ? catalogSrc : undefined);
+  const resolvedSrc = customSrc && customSrc !== failedSrc
+    ? customSrc
+    : catalogSrc && catalogSrc !== failedSrc
+      ? catalogSrc
+      : undefined;
   const showImage = !!resolvedSrc;
 
   useEffect(() => {
@@ -128,7 +140,7 @@ export function Cover({
           src={resolvedSrc}
           alt={alt}
           loading="lazy"
-          onError={() => setRemoteFailed(true)}
+          onError={() => setFailedSrc(resolvedSrc)}
           className="h-full w-full object-contain p-0.5"
         />
       ) : (

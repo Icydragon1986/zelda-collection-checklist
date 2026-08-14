@@ -1,5 +1,11 @@
 # Notes de version
 
+## 1.0.1
+
+- correction du chargement intermittent des jaquettes au démarrage de l'application;
+- attente du chemin de ressource Tauri avant de créer l'image, ce qui élimine la course avec une URL locale invalide;
+- retour automatique à la jaquette du catalogue lorsqu'une image personnalisée n'est plus accessible.
+
 ## 1.0.0
 
 - première version officielle de Zelda Collection Checklist;

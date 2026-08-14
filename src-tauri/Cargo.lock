@@ -3697,21 +3697,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "zelda-collection-checklist"
-version = "1.0.0"
-dependencies = [
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tauri-plugin-fs",
- "tauri-plugin-opener",
- "tauri-plugin-process",
- "tauri-plugin-store",
- "tauri-plugin-updater",
-]
-
-[[package]]
 name = "tauri-build"
 version = "2.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5400,6 +5385,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d1afec51604565183aeb5c54c20aeab286120d4e4460f7f76e3e8bb8c0d99473"
 dependencies = [
  "serde",
+]
+
+[[package]]
+name = "zelda-collection-checklist"
+version = "1.0.1"
+dependencies = [
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-fs",
+ "tauri-plugin-opener",
+ "tauri-plugin-process",
+ "tauri-plugin-store",
+ "tauri-plugin-updater",
 ]
 
 [[package]]
