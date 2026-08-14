@@ -38,6 +38,8 @@ jobs:
         run: npm ci --prefer-offline --no-audit
       - name: Vérifier le catalogue et les images
         run: npm run audit:catalog
+      - name: Tester la synchronisation chiffrée
+        run: npm run test:sync
       - name: Préparer la signature Authenticode (facultatif)
         shell: pwsh
         env:

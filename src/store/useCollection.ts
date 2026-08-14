@@ -4,6 +4,7 @@ import { mkdir, writeFile, remove, BaseDirectory } from "@tauri-apps/plugin-fs";
 import { appDataDir, join } from "@tauri-apps/api/path";
 import { isTauri } from "@/lib/platform";
 import { deleteWebCover, saveWebCover } from "@/lib/webCoverStore";
+import { notifyCollectionFieldChange, notifyCollectionReplaced } from "@/lib/syncEvents";
 
 export interface Ownership {
   cartridge: boolean;
@@ -24,7 +25,7 @@ export interface AutomaticBackup {
   fingerprint: string;
 }
 
-interface CollectionSnapshot {
+export interface CollectionSnapshot {
   games: Record<string, Ownership>;
   amiibo: Record<string, AmiiboOwnership>;
   consoles: Record<string, boolean>;
@@ -64,6 +65,7 @@ interface CollectionState {
   restoreBackup: (raw: string) => void;
   restoreAutomaticBackup: (id: string) => void;
   clearAutomaticBackups: () => void;
+  applySyncedSnapshot: (snapshot: CollectionSnapshot) => void;
   init: () => Promise<void>;
 }
 
@@ -215,6 +217,7 @@ export const useCollection = create<CollectionState>((set, get) => ({
     const games = { ...get().games, [id]: { ...current, [key]: value } };
     set({ games });
     persist({ games, amiibo: get().amiibo, consoles: get().consoles, customCovers: get().customCovers });
+    notifyCollectionFieldChange(["games", id, key], value);
   },
 
   setAmiiboFlag: (id, key, value) => {
@@ -223,13 +226,16 @@ export const useCollection = create<CollectionState>((set, get) => ({
     const amiibo = { ...get().amiibo, [id]: { ...current, [key]: value } };
     set({ amiibo });
     persist({ games: get().games, amiibo, consoles: get().consoles, customCovers: get().customCovers });
+    notifyCollectionFieldChange(["amiibo", id, key], value);
   },
 
   toggleConsole: (id) => {
     addAutomaticBackup({ games: get().games, amiibo: get().amiibo, consoles: get().consoles });
-    const consoles = { ...get().consoles, [id]: !get().consoles[id] };
+    const value = !get().consoles[id];
+    const consoles = { ...get().consoles, [id]: value };
     set({ consoles });
     persist({ games: get().games, amiibo: get().amiibo, consoles, customCovers: get().customCovers });
+    notifyCollectionFieldChange(["consoles", id], value);
   },
 
   setCustomCover: async (id, file) => {
@@ -275,6 +281,7 @@ export const useCollection = create<CollectionState>((set, get) => ({
     addAutomaticBackup({ games: get().games, amiibo: get().amiibo, consoles: get().consoles });
     set({ games, amiibo, consoles });
     persist({ games, amiibo, consoles, customCovers: get().customCovers });
+    notifyCollectionReplaced();
   },
 
   restoreAutomaticBackup: (id) => {
@@ -287,5 +294,11 @@ export const useCollection = create<CollectionState>((set, get) => ({
     if (automaticBackupTimer) clearTimeout(automaticBackupTimer);
     set({ automaticBackups: [] });
     queueStoreWrite("automaticBackups", []);
+  },
+
+  applySyncedSnapshot: ({ games, amiibo, consoles }) => {
+    addAutomaticBackup({ games: get().games, amiibo: get().amiibo, consoles: get().consoles });
+    set({ games, amiibo, consoles });
+    persist({ games, amiibo, consoles, customCovers: get().customCovers });
   },
 }));

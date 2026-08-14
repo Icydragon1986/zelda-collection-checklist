@@ -22,6 +22,7 @@ import { boxedAmiibo, validateCatalog } from "@/data/catalog";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { regionLabel, useI18n } from "@/i18n";
 import { InstallWebAppBanner } from "@/components/InstallWebAppBanner";
+import { useSync } from "@/store/useSync";
 
 const REGIONS: Region[] = ["NA", "PAL", "JP"];
 type CategoryTab = "games" | "consoles" | "amiibo";
@@ -41,6 +42,7 @@ function App() {
   const isCategoryVisible = useFilters((s) => s.isCategoryVisible);
 
   useEffect(() => { void useCollection.getState().init(); }, []);
+  useEffect(() => { if (ready) void useSync.getState().initialize(); }, [ready]);
   useEffect(() => {
     if (!import.meta.env.DEV) return;
     const catalogErrors = validateCatalog();

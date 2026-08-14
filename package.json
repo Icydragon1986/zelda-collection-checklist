@@ -1,15 +1,16 @@
 {
   "name": "zelda-collection-checklist",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "build:web": "tsc && vite build --mode web",
     "audit:catalog": "node scripts/audit-catalog.mjs",
+    "test:sync": "node --experimental-strip-types scripts/test-sync.ts",
     "catalog:add": "node scripts/catalog-add.mjs",
-    "check": "npm run audit:catalog && npm run build",
+    "check": "npm run audit:catalog && npm run test:sync && npm run build",
     "preview": "vite preview",
     "tauri": "tauri"
   },
@@ -22,6 +23,7 @@
     "@tauri-apps/plugin-process": "^2.3.1",
     "@tauri-apps/plugin-store": "^2.4.4",
     "@tauri-apps/plugin-updater": "^2.10.1",
+    "qrcode": "^1.5.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.31.0",
@@ -37,6 +39,7 @@
   "devDependencies": {
     "@tauri-apps/cli": "^2",
     "@types/node": "^26.2.0",
+    "@types/qrcode": "^1.5.5",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.6.0",

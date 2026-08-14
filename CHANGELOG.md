@@ -1,5 +1,16 @@
 # Notes de version
 
+## 1.2.0
+
+- ajout d'une synchronisation privée facultative entre Windows, iPhone et les autres appareils Web;
+- chiffrement AES-GCM de la collection directement sur l'appareil avant tout envoi;
+- appairage simplifié par code QR ou par collage du lien privé;
+- fusion automatique des changements effectués hors ligne ou simultanément sur plusieurs appareils;
+- ajout d'un serveur personnel léger pour Raspberry Pi, isolé des autres services;
+- publication du serveur par une route Cloudflare HTTPS dédiée;
+- conservation locale des images personnalisées, qui ne sont jamais envoyées au serveur;
+- synchronisation automatique au démarrage, après une modification et au retour de la connexion.
+
 ## 1.1.0
 
 - ajout d'une interface française et anglaise avec préférence mémorisée;

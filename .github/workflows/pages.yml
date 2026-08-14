@@ -33,6 +33,12 @@ jobs:
       - name: Validate catalog
         run: npm run audit:catalog
 
+      - name: Test encrypted sync
+        run: npm run test:sync
+
+      - name: Test personal sync server
+        run: python3 -m unittest discover -s sync-server -v
+
       - name: Build installable Web app
         run: npm run build:web
         env:

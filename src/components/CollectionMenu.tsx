@@ -7,6 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useCollection } from "@/store/useCollection";
 import { useI18n } from "@/i18n";
 import { isTauri } from "@/lib/platform";
+import { SyncPanel } from "@/components/SyncPanel";
 
 const REPORT_URL = "https://github.com/Icydragon1986/zelda-collection-checklist/issues/new?template=catalog-report.yml";
 
@@ -72,7 +73,7 @@ export function CollectionMenu() {
       <PopoverTrigger asChild>
         <Button variant="outline" size="icon" title={t("menu.title")}><Settings className="size-4" /></Button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-80">
+      <PopoverContent align="end" className="max-h-[85vh] w-80 overflow-y-auto">
         <div className="mb-4 flex items-start gap-3">
           <div className="rounded-lg bg-primary/10 p-2 text-primary"><Info className="size-5" /></div>
           <div><p className="font-semibold">Triforce Checklist</p><p className="text-xs text-muted-foreground">{t("menu.version", { version })}</p></div>
@@ -84,6 +85,7 @@ export function CollectionMenu() {
           <Button variant="secondary" className="h-auto justify-start whitespace-normal text-left" onClick={() => { void reportProblem(); }}><Bug className="size-4 shrink-0" />{t("menu.report")}</Button>
           <input ref={inputRef} type="file" accept="application/json,.json" className="hidden" onChange={(event) => { void importCollection(event.target.files?.[0]); event.target.value = ""; }} />
         </div>
+        <SyncPanel />
         <details className="mt-3 rounded-lg border bg-muted/20 p-2">
           <summary className="flex cursor-pointer list-none items-center gap-2 text-xs font-semibold"><Clock3 className="size-4 text-primary" />{t("menu.backups")}<span className="ml-auto rounded-full bg-muted px-2 py-0.5 tabular-nums">{automaticBackups.length}/10</span></summary>
           <p className="mt-2 text-[11px] text-muted-foreground">{t("menu.backupsActive")}</p>

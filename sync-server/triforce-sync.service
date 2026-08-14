@@ -1,0 +1,37 @@
+[Unit]
+Description=Triforce Checklist encrypted sync service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=triforce-sync
+Group=triforce-sync
+Environment=PYTHONUNBUFFERED=1
+Environment=TRIFORCE_SYNC_HOST=127.0.0.1
+Environment=TRIFORCE_SYNC_PORT=8788
+Environment=TRIFORCE_SYNC_DATABASE=/var/lib/triforce-sync/sync.sqlite3
+Environment=TRIFORCE_SYNC_TOKEN_FILE=/etc/triforce-sync/token
+Environment=TRIFORCE_SYNC_BASE_PATH=/checklist
+Environment=TRIFORCE_SYNC_ORIGINS=https://icydragon1986.github.io,http://tauri.localhost,https://tauri.localhost
+ExecStart=/usr/bin/python3 /opt/triforce-sync/triforce_sync_server.py
+Restart=on-failure
+RestartSec=5
+UMask=0027
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+MemoryMax=80M
+CPUQuota=25%
+ReadWritePaths=/var/lib/triforce-sync
+
+[Install]
+WantedBy=multi-user.target

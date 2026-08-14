@@ -4,7 +4,7 @@
 
 Une application Windows et Web installable destinée aux collectionneurs de *The Legend of Zelda*.
 
-Elle permet de suivre les jeux, variantes physiques, éditions spéciales, consoles et amiibo d’Amérique du Nord, d’Europe/PAL et du Japon. La collection est enregistrée localement sur l’ordinateur.
+Elle permet de suivre les jeux, variantes physiques, éditions spéciales, consoles et amiibo d’Amérique du Nord, d’Europe/PAL et du Japon. La collection est enregistrée localement par défaut et peut être synchronisée de façon chiffrée entre vos appareils.
 
 ## Installation
 
@@ -16,7 +16,9 @@ Les versions comprennent également des sommes SHA-256 et une attestation de pro
 
 Ouvrez la [version Web installable](https://icydragon1986.github.io/zelda-collection-checklist/) dans Safari, touchez le bouton **Partager**, puis **Sur l’écran d’accueil**. Elle s’ouvre ensuite comme une application et garde la collection localement sur l’appareil.
 
-La collection Web peut aussi être exportée ou restaurée avec le même fichier JSON que la version Windows. La synchronisation directe entre appareils sera ajoutée séparément.
+La collection Web peut aussi être exportée ou restaurée avec le même fichier JSON que la version Windows. La synchronisation privée facultative permet de garder automatiquement Windows et l’iPhone à jour. Configurez-la d’abord sur Windows, affichez le code QR, puis scannez-le avec l’iPhone. Le lien privé peut aussi être collé manuellement si iOS ouvre le mauvais écran.
+
+Le contenu est chiffré sur l’appareil avant son envoi. Le serveur personnel ne reçoit ni les noms des produits ni une copie lisible de la collection. Les images personnalisées restent locales et ne sont pas synchronisées.
 
 ## Fonctions principales
 
@@ -31,7 +33,8 @@ La collection Web peut aussi être exportée ou restaurée avec le même fichier
 - visionneuse plein écran pour toutes les images;
 - bibliothèque d'images intégrée pour un fonctionnement hors ligne;
 - version Web installable sur iPhone, iPad, Android et ordinateur;
-- mises à jour automatiques sécurisées et signées.
+- synchronisation privée chiffrée et appairage par code QR;
+- mises à jour automatiques sécurisées et signées;
 - interface française ou anglaise;
 - dix sauvegardes locales automatiques, en plus de l'export JSON;
 - formulaire intégré pour signaler une erreur ou un produit manquant;
