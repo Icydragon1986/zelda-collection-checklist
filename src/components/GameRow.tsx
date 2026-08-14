@@ -3,12 +3,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Cover } from "@/components/Cover";
-import { CATEGORY_LABELS, type Game } from "@/data/types";
+import type { Game } from "@/data/types";
 import { GAME_COVERS } from "@/data/covers";
 import { EMPTY_OWNERSHIP, useCollection } from "@/store/useCollection";
 import { cn } from "@/lib/utils";
+import { categoryLabel, useI18n } from "@/i18n";
 
 export function GameRow({ game }: { game: Game }) {
+  const { language, t } = useI18n();
   const own = useCollection((s) => s.games[game.id]) ?? EMPTY_OWNERSHIP;
   const setFlag = useCollection((s) => s.setGameFlag);
   const anyOwned = own.cartridge || own.manual || own.box || own.cib;
@@ -44,7 +46,7 @@ export function GameRow({ game }: { game: Game }) {
               variant={game.category === "curiosity" ? "destructive" : "outline"}
               className="text-[10px] font-normal"
             >
-              {CATEGORY_LABELS[game.category]}
+              {categoryLabel(game.category, language)}
             </Badge>
           )}
           <span className="w-10 shrink-0 text-right text-xs tabular-nums text-muted-foreground">
@@ -56,26 +58,26 @@ export function GameRow({ game }: { game: Game }) {
         <p className="mb-3 text-sm font-semibold">{game.title}</p>
         <div className="flex flex-col gap-2.5">
           <OwnershipToggle
-            label="Cartouche / disque"
+            label={t("ownership.media")}
             checked={own.cartridge}
             disabled={own.cib}
             onChange={(v) => setFlag(game.id, "cartridge", v)}
           />
           <OwnershipToggle
-            label="Livret"
+            label={t("ownership.manual")}
             checked={own.manual}
             disabled={own.cib}
             onChange={(v) => setFlag(game.id, "manual", v)}
           />
           <OwnershipToggle
-            label="Boîte"
+            label={t("ownership.box")}
             checked={own.box}
             disabled={own.cib}
             onChange={(v) => setFlag(game.id, "box", v)}
           />
           <div className="my-0.5 h-px bg-border" />
           <OwnershipToggle
-            label="Complet en boîte (CIB)"
+            label={t("ownership.cib")}
             checked={own.cib}
             onChange={(v) => setFlag(game.id, "cib", v)}
             emphasis
@@ -130,4 +132,3 @@ function StatusIndicator({ cib, any }: { cib: boolean; any: boolean }) {
     </div>
   );
 }
-

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/i18n";
 
 const STORAGE_KEY = "zelda-checklist-theme";
 
@@ -11,6 +12,7 @@ function getInitialTheme(): "dark" | "light" {
 }
 
 export function ThemeToggle() {
+  const { t } = useI18n();
   const [theme, setTheme] = useState<"dark" | "light">(getInitialTheme);
 
   useEffect(() => {
@@ -23,7 +25,8 @@ export function ThemeToggle() {
       variant="ghost"
       size="icon"
       onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
-      aria-label="Basculer le thème clair/sombre"
+      aria-label={t("theme.toggle")}
+      title={t("theme.toggle")}
     >
       {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
     </Button>

@@ -1,5 +1,7 @@
 # Zelda Collection Checklist
 
+[Français](README.md) · [English](README.en.md)
+
 Une application Windows destinée aux collectionneurs de *The Legend of Zelda*.
 
 Elle permet de suivre les jeux, variantes physiques, éditions spéciales, consoles et amiibo d’Amérique du Nord, d’Europe/PAL et du Japon. La collection est enregistrée localement sur l’ordinateur.
@@ -23,6 +25,9 @@ Les versions comprennent également des sommes SHA-256 et une attestation de pro
 - visionneuse plein écran pour toutes les images;
 - bibliothèque d'images intégrée pour un fonctionnement hors ligne;
 - mises à jour automatiques sécurisées et signées.
+- interface française ou anglaise;
+- dix sauvegardes locales automatiques, en plus de l'export JSON;
+- formulaire intégré pour signaler une erreur ou un produit manquant;
 - tableau de statistiques filtrable par région, catégorie et type de jeu;
 - liste des éléments manquants adaptée aux filtres d'analyse;
 - checklist imprimable ou enregistrable en PDF;
@@ -43,6 +48,10 @@ Pour un ajout futur, `npm run catalog:add -- --help` affiche la commande rapide
 qui convertit l'image, ajoute la fiche et relance l'audit automatiquement. Les
 exemples complets sont dans [le guide d'ajout](docs/adding-catalog-items.md).
 
+Les collectionneurs peuvent aussi utiliser le bouton de signalement dans
+l'application. Il ouvre un formulaire GitHub structuré avec le produit, la région,
+la correction et les sources.
+
 Le catalogue central est exposé par `src/data/catalog.ts`. Ce module regroupe les
 trois régions, les amiibo réellement vendus en boîte et la liste des visuels
 officiels en attente. En mode développement, l'application signale automatiquement
@@ -61,5 +70,10 @@ compression LZMA, avec une différence de taille minime pour cette application.
 La bibliothèque de jaquettes est distribuée comme ressource externe sous
 `src-tauri/resources/images`. Elle reste installée localement pour fonctionner
 hors ligne, sans être recompilée dans l'exécutable Rust à chaque version.
+
+La signature Authenticode est préparée dans le workflow et s'active automatiquement
+dès que les secrets d'un certificat sont fournis. Consultez
+[le guide de signature Windows](docs/windows-signing.md). La signature de mise à
+jour Tauri demeure distincte et obligatoire dans toutes les publications.
 
 Les images et marques appartiennent à leurs détenteurs respectifs. Ce projet personnel n’est ni affilié ni approuvé par Nintendo.

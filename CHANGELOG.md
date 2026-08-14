@@ -1,5 +1,15 @@
 # Notes de version
 
+## 1.1.0
+
+- ajout d'une interface française et anglaise avec préférence mémorisée;
+- ajout de dix sauvegardes locales automatiques et restaurables, en complément de l'export JSON;
+- création automatique d'un point de retour avant chaque modification de la collection;
+- ajout d'un bouton pour signaler une erreur, une mauvaise image ou un produit manquant sur GitHub;
+- ajout d'un formulaire GitHub bilingue et d'une présentation anglaise du projet;
+- préparation facultative de la signature Authenticode dans le workflow de publication;
+- documentation du cycle rapide pour les futures additions au catalogue.
+
 ## 1.0.1
 
 - correction du chargement intermittent des jaquettes au démarrage de l'application;

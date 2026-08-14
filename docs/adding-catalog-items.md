@@ -21,3 +21,15 @@ npm run catalog:add -- --kind amiibo --id amiibo-zelda-exemple --name "Zelda" --
 ```
 
 Utilisez `npm run catalog:add -- --help` pour afficher toutes les options. Une URL HTTPS peut remplacer un chemin local.
+
+## Cycle recommandé pour une future sortie
+
+1. Vérifier que le produit possède une sortie physique et identifier sa région.
+2. Conserver une source officielle ou une photo vérifiable.
+3. Ajouter la fiche et son image avec `npm run catalog:add`.
+4. Exécuter `npm run check`, puis vérifier visuellement les trois régions.
+5. Ajouter la modification au changelog avant de publier la nouvelle version.
+
+Les demandes externes arrivent par le modèle GitHub
+`.github/ISSUE_TEMPLATE/catalog-report.yml`, accessible directement depuis le
+menu de l'application.

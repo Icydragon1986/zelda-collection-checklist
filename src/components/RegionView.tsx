@@ -4,8 +4,10 @@ import { useFilters } from "@/store/useFilters";
 import { useCollection } from "@/store/useCollection";
 import { ConsoleSection } from "@/components/ConsoleSection";
 import type { Region } from "@/data/types";
+import { useI18n } from "@/i18n";
 
 export function RegionView({ region }: { region: Region }) {
+  const { t } = useI18n();
   const search = useFilters((s) => s.search);
   const ownership = useFilters((s) => s.ownership);
   const ownedGames = useCollection((s) => s.games);
@@ -29,7 +31,7 @@ export function RegionView({ region }: { region: Region }) {
   if (groups.length === 0) {
     return (
       <p className="py-12 text-center text-sm text-muted-foreground">
-        Aucun jeu ne correspond à ces filtres.
+        {t("empty.games")}
       </p>
     );
   }

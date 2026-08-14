@@ -5,6 +5,7 @@ import { convertFileSrc } from "@tauri-apps/api/core";
 import { resolveResource } from "@tauri-apps/api/path";
 import { cn } from "@/lib/utils";
 import { useCollection } from "@/store/useCollection";
+import { useI18n } from "@/i18n";
 
 export function Cover({
   id,
@@ -19,6 +20,7 @@ export function Cover({
   className?: string;
   shape?: "box" | "square";
 }) {
+  const { t } = useI18n();
   const customPath = useCollection((s) => s.customCovers[id]);
   const setCustomCover = useCollection((s) => s.setCustomCover);
   const clearCustomCover = useCollection((s) => s.clearCustomCover);
@@ -127,7 +129,7 @@ export function Cover({
           setPreviewOpen(true);
         }
       }}
-      title={showImage ? "Agrandir l'image" : undefined}
+      title={showImage ? t("cover.enlarge") : undefined}
       className={cn(
         "group relative flex shrink-0 items-center justify-center overflow-hidden rounded-md border border-border/60 bg-muted/40",
         showImage && "cursor-zoom-in",
@@ -163,7 +165,7 @@ export function Cover({
           e.preventDefault();
           inputRef.current?.click();
         }}
-        title="Ajouter ou remplacer l'image"
+        title={t("cover.replace")}
         className="absolute right-1.5 bottom-1.5 flex cursor-pointer items-center justify-center rounded-full bg-black/75 p-2 text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 focus:opacity-100"
       >
         <ImagePlus className="size-4" />
@@ -177,7 +179,7 @@ export function Cover({
             e.preventDefault();
             void clearCustomCover(id);
           }}
-          title="Retirer l'image personnalisée"
+          title={t("cover.remove")}
           className="absolute top-0.5 right-0.5 hidden cursor-pointer rounded-full bg-black/70 p-0.5 text-white group-hover:block"
         >
           <X className="size-3" />
@@ -188,7 +190,7 @@ export function Cover({
         <div
           role="dialog"
           aria-modal="true"
-          aria-label={`Aperçu de ${alt}`}
+          aria-label={t("cover.preview", { name: alt })}
           onClick={(event) => {
             event.stopPropagation();
             setPreviewOpen(false);
@@ -197,7 +199,7 @@ export function Cover({
         >
           <button
             type="button"
-            aria-label="Fermer"
+            aria-label={t("cover.close")}
             onClick={(event) => {
               event.stopPropagation();
               setPreviewOpen(false);

@@ -38,6 +38,37 @@ jobs:
         run: npm ci --prefer-offline --no-audit
       - name: Vérifier le catalogue et les images
         run: npm run audit:catalog
+      - name: Préparer la signature Authenticode (facultatif)
+        shell: pwsh
+        env:
+          WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:WINDOWS_CERTIFICATE)) {
+            Write-Host "Aucun certificat Authenticode configuré; la publication continue avec la signature de mise à jour Tauri."
+            exit 0
+          }
+          if ([string]::IsNullOrWhiteSpace($env:WINDOWS_CERTIFICATE_PASSWORD)) {
+            throw "WINDOWS_CERTIFICATE est configuré, mais WINDOWS_CERTIFICATE_PASSWORD est absent."
+          }
+          $certificatePath = Join-Path $env:RUNNER_TEMP "triforce-checklist-codesign.pfx"
+          [IO.File]::WriteAllBytes($certificatePath, [Convert]::FromBase64String($env:WINDOWS_CERTIFICATE))
+          $securePassword = ConvertTo-SecureString -String $env:WINDOWS_CERTIFICATE_PASSWORD -AsPlainText -Force
+          $certificate = Import-PfxCertificate -FilePath $certificatePath -CertStoreLocation Cert:\CurrentUser\My -Password $securePassword
+          Remove-Item -LiteralPath $certificatePath -Force
+          if (-not $certificate) { throw "Le certificat Authenticode n'a pas pu être importé." }
+          $config = @{
+            bundle = @{
+              windows = @{
+                certificateThumbprint = $certificate.Thumbprint
+                digestAlgorithm = "sha256"
+                timestampUrl = "http://timestamp.digicert.com"
+              }
+            }
+          } | ConvertTo-Json -Compress -Depth 5
+          "TAURI_CONFIG=$config" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "AUTHENTICODE_THUMBPRINT=$($certificate.Thumbprint)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          Write-Host "Signature Authenticode activée pour cette publication."
       - name: Compiler et publier l'installateur NSIS
         uses: tauri-apps/tauri-action@v1
         env:
@@ -46,13 +77,19 @@ jobs:
         with:
           tagName: v__VERSION__
           releaseName: "Zelda Collection Checklist v__VERSION__"
-          releaseBody: "Nouvelle version de Zelda Collection Checklist. L'installateur NSIS et la mise à jour automatique sont signés et publiés ci-dessous."
+          releaseBody: "Nouvelle version de Zelda Collection Checklist. L'installateur NSIS et la mise à jour automatique sont publiés ci-dessous. / A new Zelda Collection Checklist release is available below."
           generateReleaseNotes: true
           releaseDraft: false
           prerelease: false
           args: --bundles nsis
           updaterJsonPreferNsis: true
           retryAttempts: 2
+      - name: Retirer le certificat temporaire du runner
+        if: always() && env.AUTHENTICODE_THUMBPRINT != ''
+        shell: pwsh
+        run: |
+          $certificatePath = "Cert:\CurrentUser\My\$env:AUTHENTICODE_THUMBPRINT"
+          if (Test-Path -LiteralPath $certificatePath) { Remove-Item -LiteralPath $certificatePath -Force }
       - name: Afficher l'efficacité du cache
         run: sccache --show-stats
       - name: Générer les sommes SHA-256

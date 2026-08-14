@@ -5,8 +5,10 @@ import { useFilters } from "@/store/useFilters";
 import { useCollection } from "@/store/useCollection";
 import { AmiiboSeriesSection } from "@/components/AmiiboSeriesSection";
 import type { Region } from "@/data/types";
+import { useI18n } from "@/i18n";
 
 export function AmiiboView({ region, boxed = false }: { region: Region; boxed?: boolean }) {
+  const { t } = useI18n();
   const search = useFilters((s) => s.search);
   const ownership = useFilters((s) => s.ownership);
   const ownedAmiibo = useCollection((s) => s.amiibo);
@@ -29,7 +31,7 @@ export function AmiiboView({ region, boxed = false }: { region: Region; boxed?: 
   });
   const groups = groupAmiiboBySeries(filtered);
 
-  if (groups.length === 0) return <p className="py-12 text-center text-sm text-muted-foreground">Aucun amiibo ne correspond à cette recherche.</p>;
+  if (groups.length === 0) return <p className="py-12 text-center text-sm text-muted-foreground">{t("empty.amiibo")}</p>;
 
   return (
     <div className="flex flex-col gap-3">
