@@ -105,6 +105,7 @@ export function Cover({
       ? catalogSrc
       : undefined;
   const showImage = !!resolvedSrc;
+  const canEditCover = isTauri();
 
   useEffect(() => {
     if (!previewOpen) return;
@@ -168,41 +169,45 @@ export function Cover({
         <TriforcePlaceholder />
       )}
 
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onClick={(e) => e.stopPropagation()}
-        onChange={handlePick}
-      />
-      <div
-        role="button"
-        tabIndex={-1}
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          inputRef.current?.click();
-        }}
-        title={t("cover.replace")}
-        className="absolute right-1.5 bottom-1.5 flex cursor-pointer items-center justify-center rounded-full bg-black/75 p-2 text-white opacity-70 shadow-lg transition-opacity sm:opacity-0 sm:group-hover:opacity-100 sm:focus:opacity-100"
-      >
-        <ImagePlus className="size-4" />
-      </div>
-      {customSrc && (
-        <div
-          role="button"
-          tabIndex={-1}
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            void clearCustomCover(id);
-          }}
-          title={t("cover.remove")}
-          className="absolute top-0.5 right-0.5 block cursor-pointer rounded-full bg-black/70 p-0.5 text-white sm:hidden sm:group-hover:block"
-        >
-          <X className="size-3" />
-        </div>
+      {canEditCover && (
+        <>
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onClick={(e) => e.stopPropagation()}
+            onChange={handlePick}
+          />
+          <div
+            role="button"
+            tabIndex={-1}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              inputRef.current?.click();
+            }}
+            title={t("cover.replace")}
+            className="absolute right-1.5 bottom-1.5 flex cursor-pointer items-center justify-center rounded-full bg-black/75 p-2 text-white opacity-70 shadow-lg transition-opacity sm:opacity-0 sm:group-hover:opacity-100 sm:focus:opacity-100"
+          >
+            <ImagePlus className="size-4" />
+          </div>
+          {customSrc && (
+            <div
+              role="button"
+              tabIndex={-1}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                void clearCustomCover(id);
+              }}
+              title={t("cover.remove")}
+              className="absolute top-0.5 right-0.5 block cursor-pointer rounded-full bg-black/70 p-0.5 text-white sm:hidden sm:group-hover:block"
+            >
+              <X className="size-3" />
+            </div>
+          )}
+        </>
       )}
       {showImage && <Maximize2 className="pointer-events-none absolute top-1.5 left-1.5 size-4 rounded bg-black/65 p-0.5 text-white opacity-0 transition-opacity group-hover:opacity-100" />}
       {previewOpen && resolvedSrc && createPortal(
