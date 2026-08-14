@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { load, type Store } from "@tauri-apps/plugin-store";
 import { mkdir, writeFile, remove, BaseDirectory } from "@tauri-apps/plugin-fs";
 import { appDataDir, join } from "@tauri-apps/api/path";
+import { isTauri } from "@/lib/platform";
+import { deleteWebCover, saveWebCover } from "@/lib/webCoverStore";
 
 export interface Ownership {
   cartridge: boolean;
@@ -66,8 +68,10 @@ interface CollectionState {
 }
 
 let storeInstance: Store | null = null;
+let initializationPromise: Promise<void> | null = null;
 let automaticBackupTimer: ReturnType<typeof setTimeout> | undefined;
 let persistenceQueue = Promise.resolve();
+const WEB_STORAGE_PREFIX = "triforce-checklist:";
 
 function snapshotToBackup(snapshot: CollectionSnapshot, createdAt = new Date().toISOString()): string {
   return JSON.stringify({
@@ -85,9 +89,12 @@ function snapshotFingerprint(snapshot: CollectionSnapshot): string {
 function queueStoreWrite(key: string, value: unknown) {
   persistenceQueue = persistenceQueue
     .then(async () => {
-      if (!storeInstance) return;
-      await storeInstance.set(key, value);
-      await storeInstance.save();
+      if (storeInstance) {
+        await storeInstance.set(key, value);
+        await storeInstance.save();
+      } else if (!isTauri()) {
+        localStorage.setItem(`${WEB_STORAGE_PREFIX}${key}`, JSON.stringify(value));
+      }
     })
     .catch((error) => console.error("Impossible d'enregistrer la collection.", error));
 }
@@ -158,28 +165,48 @@ export const useCollection = create<CollectionState>((set, get) => ({
   },
 
   init: async () => {
-    if (storeInstance) return;
-    try {
-      const store = await load("collection.json", { autoSave: false });
-      storeInstance = store;
-      const saved = await store.get<{
-        games?: Record<string, unknown>;
-        amiibo?: Record<string, unknown>;
-        consoles?: Record<string, boolean>;
-        customCovers?: Record<string, string>;
-      }>("collection");
-      const storedBackups = await store.get<AutomaticBackup[]>("automaticBackups");
-      const games = Object.fromEntries(
-        Object.entries(saved?.games ?? {}).map(([id, v]) => [id, toOwnership(v)]),
-      );
-      const amiibo = Object.fromEntries(Object.entries(saved?.amiibo ?? {}).map(([id, v]) => [id, toAmiiboOwnership(v)]));
-      const consoles = saved?.consoles ?? {};
-      set({ games, amiibo, consoles, customCovers: saved?.customCovers ?? {}, automaticBackups: Array.isArray(storedBackups) ? storedBackups.slice(0, 10) : [], ready: true });
-      scheduleAutomaticBackup({ games, amiibo, consoles });
-    } catch (error) {
-      console.error("Impossible de charger la collection persistée, démarrage à vide.", error);
-      set({ ready: true });
-    }
+    if (get().ready) return;
+    if (initializationPromise) return initializationPromise;
+    initializationPromise = (async () => {
+      try {
+        let saved: {
+          games?: Record<string, unknown>;
+          amiibo?: Record<string, unknown>;
+          consoles?: Record<string, boolean>;
+          customCovers?: Record<string, string>;
+        } | null | undefined;
+        let storedBackups: AutomaticBackup[] | null | undefined;
+
+        if (isTauri()) {
+          const store = await load("collection.json", { autoSave: false });
+          storeInstance = store;
+          saved = await store.get("collection");
+          storedBackups = await store.get("automaticBackups");
+        } else {
+          const rawCollection = localStorage.getItem(`${WEB_STORAGE_PREFIX}collection`);
+          const rawBackups = localStorage.getItem(`${WEB_STORAGE_PREFIX}automaticBackups`);
+          saved = rawCollection ? JSON.parse(rawCollection) : undefined;
+          storedBackups = rawBackups ? JSON.parse(rawBackups) : undefined;
+        }
+
+        const games = Object.fromEntries(Object.entries(saved?.games ?? {}).map(([id, value]) => [id, toOwnership(value)]));
+        const amiibo = Object.fromEntries(Object.entries(saved?.amiibo ?? {}).map(([id, value]) => [id, toAmiiboOwnership(value)]));
+        const consoles = saved?.consoles ?? {};
+        set({
+          games,
+          amiibo,
+          consoles,
+          customCovers: saved?.customCovers ?? {},
+          automaticBackups: Array.isArray(storedBackups) ? storedBackups.slice(0, 10) : [],
+          ready: true,
+        });
+        scheduleAutomaticBackup({ games, amiibo, consoles });
+      } catch (error) {
+        console.error("Impossible de charger la collection persistée, démarrage à vide.", error);
+        set({ ready: true });
+      }
+    })();
+    return initializationPromise;
   },
 
   setGameFlag: (id, key, value) => {
@@ -206,6 +233,13 @@ export const useCollection = create<CollectionState>((set, get) => ({
   },
 
   setCustomCover: async (id, file) => {
+    if (!isTauri()) {
+      const marker = await saveWebCover(id, file);
+      const customCovers = { ...get().customCovers, [id]: marker };
+      set({ customCovers });
+      persist({ games: get().games, amiibo: get().amiibo, consoles: get().consoles, customCovers });
+      return;
+    }
     const bytes = new Uint8Array(await file.arrayBuffer());
     const ext = (file.name.split(".").pop() || "png").toLowerCase();
     const filename = `${id}.${ext}`;
@@ -227,7 +261,8 @@ export const useCollection = create<CollectionState>((set, get) => ({
     set({ customCovers });
     persist({ games: get().games, amiibo: get().amiibo, consoles: get().consoles, customCovers });
     try {
-      await remove(path);
+      if (isTauri()) await remove(path);
+      else await deleteWebCover(path);
     } catch {
       // Le fichier a peut-être déjà disparu — pas grave, l'entrée du store est déjà nettoyée.
     }

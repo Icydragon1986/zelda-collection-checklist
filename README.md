@@ -2,7 +2,7 @@
 
 [Français](README.md) · [English](README.en.md)
 
-Une application Windows destinée aux collectionneurs de *The Legend of Zelda*.
+Une application Windows et Web installable destinée aux collectionneurs de *The Legend of Zelda*.
 
 Elle permet de suivre les jeux, variantes physiques, éditions spéciales, consoles et amiibo d’Amérique du Nord, d’Europe/PAL et du Japon. La collection est enregistrée localement sur l’ordinateur.
 
@@ -11,6 +11,12 @@ Elle permet de suivre les jeux, variantes physiques, éditions spéciales, conso
 Téléchargez le fichier `setup.exe` de la [dernière version](https://github.com/icydragon1986/zelda-collection-checklist/releases/latest). L’application vérifie ensuite automatiquement si une nouvelle version est disponible.
 
 Les versions comprennent également des sommes SHA-256 et une attestation de provenance GitHub. Consultez [la procédure de vérification](docs/verify-release.md).
+
+### iPhone et iPad — sans App Store
+
+Ouvrez la [version Web installable](https://icydragon1986.github.io/zelda-collection-checklist/) dans Safari, touchez le bouton **Partager**, puis **Sur l’écran d’accueil**. Elle s’ouvre ensuite comme une application et garde la collection localement sur l’appareil.
+
+La collection Web peut aussi être exportée ou restaurée avec le même fichier JSON que la version Windows. La synchronisation directe entre appareils sera ajoutée séparément.
 
 ## Fonctions principales
 
@@ -24,6 +30,7 @@ Les versions comprennent également des sommes SHA-256 et une attestation de pro
 - filtres Possédés, Manquants, CIB et Incomplets;
 - visionneuse plein écran pour toutes les images;
 - bibliothèque d'images intégrée pour un fonctionnement hors ligne;
+- version Web installable sur iPhone, iPad, Android et ordinateur;
 - mises à jour automatiques sécurisées et signées.
 - interface française ou anglaise;
 - dix sauvegardes locales automatiques, en plus de l'export JSON;

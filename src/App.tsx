@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { boxedAmiibo, validateCatalog } from "@/data/catalog";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { regionLabel, useI18n } from "@/i18n";
+import { InstallWebAppBanner } from "@/components/InstallWebAppBanner";
 
 const REGIONS: Region[] = ["NA", "PAL", "JP"];
 type CategoryTab = "games" | "consoles" | "amiibo";
@@ -67,29 +68,30 @@ function App() {
 
   const regionTabs = (content: (r: Region) => React.ReactNode) => (
     <Tabs value={region} onValueChange={(v) => setRegion(v as Region)}>
-      <TabsList className="h-auto w-full flex-wrap justify-start gap-1 bg-muted/40 p-1 sm:w-fit">
-        {REGIONS.map((r) => <TabsTrigger key={r} value={r} className="gap-1.5 px-3 py-1.5">{regionLabel(r, language)}<Badge variant="secondary" className="text-[10px] tabular-nums">{counts[r].owned}/{counts[r].total}</Badge></TabsTrigger>)}
+      <TabsList className="grid h-auto w-full grid-cols-3 gap-1 bg-muted/40 p-1 sm:flex sm:w-fit sm:flex-wrap sm:justify-start">
+        {REGIONS.map((r) => <TabsTrigger key={r} value={r} className="min-w-0 gap-1 px-2 py-1.5 text-[11px] sm:px-3 sm:text-sm"><span className="truncate">{regionLabel(r, language)}</span><Badge variant="secondary" className="hidden text-[10px] tabular-nums min-[390px]:inline-flex">{counts[r].owned}/{counts[r].total}</Badge></TabsTrigger>)}
       </TabsList>
       {REGIONS.map((r) => <TabsContent key={r} value={r} className="mt-4">{content(r)}</TabsContent>)}
     </Tabs>
   );
 
-  return <TooltipProvider><UpdateChecker /><div className="min-h-screen bg-background"><div className="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-8 sm:px-6">
-    <header className="flex items-center justify-between gap-4">
+  return <TooltipProvider><UpdateChecker /><div className="min-h-screen bg-background"><div className="mx-auto flex max-w-5xl flex-col gap-5 px-3 py-4 sm:gap-6 sm:px-6 sm:py-8">
+    <header className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center sm:gap-4">
       <div className="flex min-w-0 items-center gap-3">
         <img
-          src="/triforce-checklist-logo.png"
+          src={`${import.meta.env.BASE_URL}triforce-checklist-logo.png`}
           alt=""
           aria-hidden="true"
-          className="size-[3.25rem] shrink-0 object-contain drop-shadow-sm"
+          className="size-11 shrink-0 object-contain drop-shadow-sm sm:size-[3.25rem]"
         />
         <div className="min-w-0">
-          <h1 className="text-2xl font-bold tracking-tight"><span className="text-primary">Triforce</span> Checklist</h1>
+          <h1 className="text-xl font-bold tracking-tight sm:text-2xl"><span className="text-primary">Triforce</span> Checklist</h1>
           <p className="text-sm text-muted-foreground">{t("app.subtitle")}</p>
         </div>
       </div>
-      <div className="flex shrink-0 gap-2"><Button variant="outline" size="icon" title={t("app.stats")} onClick={() => setDashboardOpen(true)}><BarChart3 className="size-4" /></Button><CollectionMenu /><LanguageToggle /><ThemeToggle /></div>
+      <div className="flex w-full shrink-0 justify-end gap-2 sm:w-auto"><Button variant="outline" size="icon" title={t("app.stats")} onClick={() => setDashboardOpen(true)}><BarChart3 className="size-4" /></Button><CollectionMenu /><LanguageToggle /><ThemeToggle /></div>
     </header>
+    <InstallWebAppBanner />
     <FilterBar />
     <Tabs value={category} onValueChange={(v) => setCategory(v as CategoryTab)}>
       <TabsList className="grid !h-auto w-full grid-cols-3 gap-1.5 rounded-xl border border-border/60 bg-card/70 p-1.5 shadow-sm">

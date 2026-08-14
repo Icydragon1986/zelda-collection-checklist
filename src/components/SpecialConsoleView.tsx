@@ -31,7 +31,7 @@ export function SpecialConsoleView({ region }: { region: Region }) {
         return (
           <label key={item.id} htmlFor={ownershipId} className={cn("flex cursor-pointer gap-3 rounded-xl border border-border/60 bg-card/50 p-3 hover:border-primary/40", owned && "border-primary/50 bg-primary/5")}>
             <Checkbox id={ownershipId} checked={owned} onCheckedChange={() => toggle(ownershipId)} className="mt-0.5" />
-            <Cover id={item.id} src={SPECIAL_CONSOLE_COVERS[item.id]} alt={item.name} shape="square" className="h-32 w-32" />
+            <Cover id={item.id} src={SPECIAL_CONSOLE_COVERS[item.id]} alt={item.name} shape="square" className="h-24 w-24 sm:h-32 sm:w-32" />
             <div className="min-w-0 flex-1">
               <p className="text-sm font-medium leading-tight">{item.name}</p>
               <div className="mt-2 flex flex-wrap gap-1.5"><Badge variant="outline">{item.family}</Badge><Badge variant="secondary">{item.region}</Badge><span className="text-xs text-muted-foreground">{item.year}</span></div>

@@ -2,7 +2,7 @@
 
 [Français](README.md) · [English](README.en.md)
 
-A Windows application for *The Legend of Zelda* collectors.
+A Windows and installable Web application for *The Legend of Zelda* collectors.
 
 It tracks physical games, variants, special editions, consoles and amiibo from
 North America, Europe/PAL and Japan. Collection data is stored locally on the
@@ -12,6 +12,12 @@ computer and the catalog images work offline.
 
 Download the `setup.exe` file from the [latest release](https://github.com/Icydragon1986/zelda-collection-checklist/releases/latest).
 The application will then automatically check for future updates.
+
+### iPhone and iPad — no App Store required
+
+Open the [installable Web version](https://icydragon1986.github.io/zelda-collection-checklist/) in Safari, tap **Share**, then **Add to Home Screen**. It will then open like an app and store the collection locally on the device.
+
+The Web collection can also be exported or restored using the same JSON file as the Windows version. Direct device synchronization will be added separately.
 
 ## Main features
 
@@ -24,6 +30,7 @@ The application will then automatically check for future updates.
 - ten automatic local backups plus JSON export and restoration;
 - built-in form to report incorrect or missing catalog products;
 - secure, signed automatic updates.
+- installable Web version for iPhone, iPad, Android and desktop;
 
 ## Catalog contributions
 

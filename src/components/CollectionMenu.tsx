@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useCollection } from "@/store/useCollection";
 import { useI18n } from "@/i18n";
+import { isTauri } from "@/lib/platform";
 
 const REPORT_URL = "https://github.com/Icydragon1986/zelda-collection-checklist/issues/new?template=catalog-report.yml";
 
@@ -20,6 +21,10 @@ export function CollectionMenu() {
   const clearAutomaticBackups = useCollection((state) => state.clearAutomaticBackups);
 
   useEffect(() => {
+    if (!isTauri()) {
+      setVersion(t("menu.webVersion"));
+      return;
+    }
     void getVersion().then(setVersion).catch(() => setVersion(t("menu.development")));
   }, [language]);
 
@@ -73,7 +78,7 @@ export function CollectionMenu() {
           <div><p className="font-semibold">Triforce Checklist</p><p className="text-xs text-muted-foreground">{t("menu.version", { version })}</p></div>
         </div>
         <div className="grid gap-2">
-          <Button variant="secondary" className="justify-start" onClick={() => window.dispatchEvent(new Event("triforce:check-update"))}><RefreshCw className="size-4" />{t("menu.checkUpdates")}</Button>
+          {isTauri() && <Button variant="secondary" className="justify-start" onClick={() => window.dispatchEvent(new Event("triforce:check-update"))}><RefreshCw className="size-4" />{t("menu.checkUpdates")}</Button>}
           <Button variant="secondary" className="justify-start" onClick={exportCollection}><Download className="size-4" />{t("menu.export")}</Button>
           <Button variant="secondary" className="justify-start" onClick={() => inputRef.current?.click()}><Upload className="size-4" />{t("menu.restore")}</Button>
           <Button variant="secondary" className="h-auto justify-start whitespace-normal text-left" onClick={() => { void reportProblem(); }}><Bug className="size-4 shrink-0" />{t("menu.report")}</Button>

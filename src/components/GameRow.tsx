@@ -25,33 +25,20 @@ export function GameRow({ game }: { game: Game }) {
             if (e.key === "Enter" || e.key === " ") e.currentTarget.click();
           }}
           className={cn(
-            "flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors",
+            "flex w-full cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-left transition-colors sm:gap-3 sm:px-3",
             "hover:bg-accent/10",
             anyOwned && "bg-primary/5",
           )}
         >
           <StatusIndicator cib={own.cib} any={anyOwned} />
-          <Cover id={game.id} src={GAME_COVERS[game.id]} alt={game.title} className="h-36" />
-          <span
-            className={cn(
-              "flex-1 text-sm font-medium",
-              anyOwned && "text-muted-foreground",
-              own.cib && "line-through decoration-primary/40",
-            )}
-          >
-            {game.title}
-          </span>
-          {game.category !== "main" && (
-            <Badge
-              variant={game.category === "curiosity" ? "destructive" : "outline"}
-              className="text-[10px] font-normal"
-            >
-              {categoryLabel(game.category, language)}
-            </Badge>
-          )}
-          <span className="w-10 shrink-0 text-right text-xs tabular-nums text-muted-foreground">
-            {game.year}
-          </span>
+          <Cover id={game.id} src={GAME_COVERS[game.id]} alt={game.title} className="h-28 sm:h-36" />
+          <div className="min-w-0 flex-1">
+            <p className={cn("text-sm font-medium", anyOwned && "text-muted-foreground", own.cib && "line-through decoration-primary/40")}>{game.title}</p>
+            <div className="mt-1 flex flex-wrap items-center gap-1.5">
+              {game.category !== "main" && <Badge variant={game.category === "curiosity" ? "destructive" : "outline"} className="text-[10px] font-normal">{categoryLabel(game.category, language)}</Badge>}
+              <span className="text-xs tabular-nums text-muted-foreground">{game.year}</span>
+            </div>
+          </div>
         </div>
       </PopoverTrigger>
       <PopoverContent className="w-64" align="start">

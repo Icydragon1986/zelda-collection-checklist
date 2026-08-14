@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:web": "tsc && vite build --mode web",
     "audit:catalog": "node scripts/audit-catalog.mjs",
     "catalog:add": "node scripts/catalog-add.mjs",
     "check": "npm run audit:catalog && npm run build",

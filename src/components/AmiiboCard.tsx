@@ -24,7 +24,7 @@ export function AmiiboCard({ item, ownershipId = item.id, coverSrc, boxed = fals
   return (
     <label htmlFor={ownershipId} className={cn("flex cursor-pointer items-start gap-3 rounded-xl border border-border/60 bg-card/50 p-3 transition-colors hover:border-primary/40", owned && "border-primary/50 bg-primary/5")}>
       <Checkbox id={ownershipId} checked={owned} onCheckedChange={(v) => toggle(v === true)} className="mt-0.5 shrink-0" />
-      <Cover id={ownershipId} src={coverSrc ?? AMIIBO_COVERS[item.id]} alt={item.name} shape={boxed ? "box" : "square"} className={boxed ? "h-44 w-36 bg-white" : "h-28 w-28"} />
+      <Cover id={ownershipId} src={coverSrc ?? AMIIBO_COVERS[item.id]} alt={item.name} shape={boxed ? "box" : "square"} className={boxed ? "h-36 w-28 bg-white sm:h-44 sm:w-36" : "h-24 w-24 sm:h-28 sm:w-28"} />
       <div className="min-w-0 flex-1">
         <p className={cn("text-sm leading-tight font-medium", owned && "text-muted-foreground")}>{item.name}</p>
         <div className="mt-1.5 flex flex-wrap items-center gap-1.5">

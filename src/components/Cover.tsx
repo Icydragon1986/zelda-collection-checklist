@@ -6,6 +6,8 @@ import { resolveResource } from "@tauri-apps/api/path";
 import { cn } from "@/lib/utils";
 import { useCollection } from "@/store/useCollection";
 import { useI18n } from "@/i18n";
+import { isTauri } from "@/lib/platform";
+import { isWebCoverMarker, loadWebCover } from "@/lib/webCoverStore";
 
 export function Cover({
   id,
@@ -32,18 +34,29 @@ export function Cover({
 
   useEffect(() => {
     let cancelled = false;
+    let objectUrl: string | undefined;
     setFailedSrc(undefined);
     if (!customPath) {
       setCustomSrc(undefined);
       return;
     }
-    try {
-      if (!cancelled) setCustomSrc(convertFileSrc(customPath));
-    } catch {
-      setCustomSrc(undefined);
+    if (isWebCoverMarker(customPath)) {
+      void loadWebCover(customPath)
+        .then((url) => {
+          objectUrl = url;
+          if (!cancelled) setCustomSrc(url);
+        })
+        .catch(() => { if (!cancelled) setCustomSrc(undefined); });
+    } else if (isTauri()) {
+      try {
+        if (!cancelled) setCustomSrc(convertFileSrc(customPath));
+      } catch {
+        setCustomSrc(undefined);
+      }
     }
     return () => {
       cancelled = true;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
   }, [customPath]);
 
@@ -60,6 +73,12 @@ export function Cover({
     // un 404 initial peut gagner la course et masquer définitivement l'image.
     setCatalogSrc(undefined);
     const relativePath = src.replace(/^\/+/, "");
+    if (!isTauri()) {
+      setCatalogSrc(import.meta.env.DEV
+        ? `${import.meta.env.VITE_RESOURCE_IMAGE_BASE}/${relativePath.slice("images/".length)}`
+        : `${import.meta.env.BASE_URL}${relativePath}`);
+      return;
+    }
     if (import.meta.env.DEV) {
       setCatalogSrc(`${import.meta.env.VITE_RESOURCE_IMAGE_BASE}/${relativePath.slice("images/".length)}`);
       return;
@@ -166,7 +185,7 @@ export function Cover({
           inputRef.current?.click();
         }}
         title={t("cover.replace")}
-        className="absolute right-1.5 bottom-1.5 flex cursor-pointer items-center justify-center rounded-full bg-black/75 p-2 text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 focus:opacity-100"
+        className="absolute right-1.5 bottom-1.5 flex cursor-pointer items-center justify-center rounded-full bg-black/75 p-2 text-white opacity-70 shadow-lg transition-opacity sm:opacity-0 sm:group-hover:opacity-100 sm:focus:opacity-100"
       >
         <ImagePlus className="size-4" />
       </div>
@@ -180,7 +199,7 @@ export function Cover({
             void clearCustomCover(id);
           }}
           title={t("cover.remove")}
-          className="absolute top-0.5 right-0.5 hidden cursor-pointer rounded-full bg-black/70 p-0.5 text-white group-hover:block"
+          className="absolute top-0.5 right-0.5 block cursor-pointer rounded-full bg-black/70 p-0.5 text-white sm:hidden sm:group-hover:block"
         >
           <X className="size-3" />
         </div>
