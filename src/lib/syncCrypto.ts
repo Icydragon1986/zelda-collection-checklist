@@ -100,6 +100,10 @@ export function createPairingUrl(bundle: PairingBundle): string {
   return `${PAIRING_APP_URL}#pair=${encodeURIComponent(encodePairingBundle(bundle))}`;
 }
 
+export function createPairingQrValue(bundle: PairingBundle): string {
+  return `triforce-checklist:pair:${encodePairingBundle(bundle)}`;
+}
+
 export function pairingBundleFromHash(hash: string): PairingBundle | undefined {
   const match = /^#pair=([^&]+)$/.exec(hash);
   return match ? decodePairingBundle(decodeURIComponent(match[1])) : undefined;
@@ -115,5 +119,7 @@ export function pairingBundleFromInput(value: string): PairingBundle {
   } catch {
     // The input may be the encoded pairing code without the surrounding URL.
   }
-  return decodePairingBundle(trimmed.replace(/^#?pair=/, ""));
+  return decodePairingBundle(trimmed
+    .replace(/^triforce-checklist:pair:/, "")
+    .replace(/^#?pair=/, ""));
 }

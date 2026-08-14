@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { useCollection, type CollectionSnapshot } from "@/store/useCollection";
 import {
   createPairingUrl,
+  createPairingQrValue,
   decryptSyncPayload,
   encryptSyncPayload,
   generateEncryptionKey,
@@ -56,6 +57,7 @@ interface SyncState {
   errorCode?: string;
   lastSyncedAt?: string;
   pairingUrl?: string;
+  pairingQrValue?: string;
   initialize: () => Promise<void>;
   configure: (endpoint: string, token: string) => Promise<void>;
   pairFromLink: (value: string) => Promise<void>;
@@ -64,6 +66,9 @@ interface SyncState {
 }
 
 const STORAGE_KEY = "triforce-checklist:sync-v1";
+const STORAGE_DATABASE = "triforce-checklist-private-sync";
+const STORAGE_OBJECT_STORE = "configuration";
+const STORAGE_RECORD_KEY = "active";
 const DEFAULT_ENDPOINT = "https://zelda.icydragon1986.com/checklist";
 const REQUEST_TIMEOUT_MS = 12_000;
 
@@ -75,6 +80,7 @@ let listenersInstalled = false;
 let delayedSync: number | undefined;
 let periodicSync: number | undefined;
 let runtimeInstanceId: string | undefined;
+let backupQueue: Promise<void> = Promise.resolve();
 
 class SyncRequestError extends Error {
   constructor(public readonly code: string, public readonly status?: number) {
@@ -93,20 +99,88 @@ function clockDeviceId(config: PersistedSyncConfig): string {
 }
 
 function pairingUrl(config: PersistedSyncConfig): string {
-  return createPairingUrl({
+  return createPairingUrl(pairingBundle(config));
+}
+
+function pairingQrValue(config: PersistedSyncConfig): string {
+  return createPairingQrValue(pairingBundle(config));
+}
+
+function pairingBundle(config: PersistedSyncConfig): PairingBundle {
+  return {
     v: 1,
     endpoint: config.endpoint,
     token: config.token,
     key: config.encryptionKey,
+  };
+}
+
+function openStorageDatabase(): Promise<IDBDatabase> {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(STORAGE_DATABASE, 1);
+    request.onupgradeneeded = () => {
+      if (!request.result.objectStoreNames.contains(STORAGE_OBJECT_STORE)) {
+        request.result.createObjectStore(STORAGE_OBJECT_STORE);
+      }
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
   });
+}
+
+async function writeBackup(serialized?: string): Promise<void> {
+  if (!("indexedDB" in window)) return;
+  const database = await openStorageDatabase();
+  try {
+    await new Promise<void>((resolve, reject) => {
+      const transaction = database.transaction(STORAGE_OBJECT_STORE, "readwrite");
+      const store = transaction.objectStore(STORAGE_OBJECT_STORE);
+      if (serialized) store.put(serialized, STORAGE_RECORD_KEY);
+      else store.delete(STORAGE_RECORD_KEY);
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error);
+      transaction.onabort = () => reject(transaction.error);
+    });
+  } finally {
+    database.close();
+  }
+}
+
+async function readBackup(): Promise<string | undefined> {
+  if (!("indexedDB" in window)) return undefined;
+  const database = await openStorageDatabase();
+  try {
+    return await new Promise<string | undefined>((resolve, reject) => {
+      const transaction = database.transaction(STORAGE_OBJECT_STORE, "readonly");
+      const request = transaction.objectStore(STORAGE_OBJECT_STORE).get(STORAGE_RECORD_KEY);
+      request.onsuccess = () => resolve(typeof request.result === "string" ? request.result : undefined);
+      request.onerror = () => reject(request.error);
+    });
+  } finally {
+    database.close();
+  }
+}
+
+function queueBackup(serialized?: string): void {
+  backupQueue = backupQueue
+    .then(() => writeBackup(serialized))
+    .catch((error) => console.warn("Sauvegarde secondaire de la synchronisation impossible.", error));
+}
+
+function requestPersistentStorage(): void {
+  if (!navigator.storage?.persist) return;
+  void navigator.storage.persist().catch(() => false);
 }
 
 function saveConfig(): void {
   if (!activeConfig) {
     localStorage.removeItem(STORAGE_KEY);
+    queueBackup();
     return;
   }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(activeConfig));
+  const serialized = JSON.stringify(activeConfig);
+  localStorage.setItem(STORAGE_KEY, serialized);
+  queueBackup(serialized);
 }
 
 function updateVisibleState(): void {
@@ -115,6 +189,7 @@ function updateVisibleState(): void {
     endpoint: activeConfig.endpoint,
     lastSyncedAt: activeConfig.lastSyncedAt,
     pairingUrl: pairingUrl(activeConfig),
+    pairingQrValue: pairingQrValue(activeConfig),
   } : {
     configured: false,
     endpoint: DEFAULT_ENDPOINT,
@@ -122,11 +197,20 @@ function updateVisibleState(): void {
     errorCode: undefined,
     lastSyncedAt: undefined,
     pairingUrl: undefined,
+    pairingQrValue: undefined,
   });
 }
 
-function loadConfig(): PersistedSyncConfig | undefined {
-  const raw = localStorage.getItem(STORAGE_KEY);
+async function loadConfig(): Promise<PersistedSyncConfig | undefined> {
+  let raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) {
+    try {
+      raw = await readBackup() ?? null;
+      if (raw) localStorage.setItem(STORAGE_KEY, raw);
+    } catch (error) {
+      console.warn("Récupération secondaire de la synchronisation impossible.", error);
+    }
+  }
   if (!raw) return undefined;
   try {
     const value = JSON.parse(raw) as Partial<PersistedSyncConfig>;
@@ -147,6 +231,7 @@ function loadConfig(): PersistedSyncConfig | undefined {
   } catch (error) {
     console.error("Configuration de synchronisation invalide.", error);
     localStorage.removeItem(STORAGE_KEY);
+    queueBackup();
     return undefined;
   }
 }
@@ -162,6 +247,7 @@ function installPairingBundle(bundle: PairingBundle): void {
     revision: 0,
   };
   saveConfig();
+  requestPersistentStorage();
   updateVisibleState();
 }
 
@@ -247,6 +333,7 @@ function markSynchronized(config: PersistedSyncConfig, revision: number): void {
     errorCode: undefined,
     lastSyncedAt: config.lastSyncedAt,
     pairingUrl: pairingUrl(config),
+    pairingQrValue: pairingQrValue(config),
   });
 }
 
@@ -351,6 +438,9 @@ function installAutomaticListeners(): void {
   window.addEventListener(COLLECTION_SYNC_CHANGE_EVENT, handleCollectionChange);
   window.addEventListener("online", () => scheduleSync(100));
   window.addEventListener("focus", () => scheduleSync(250));
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") scheduleSync(100);
+  });
   periodicSync = window.setInterval(() => { if (activeConfig) void synchronize(); }, 60_000);
 }
 
@@ -367,12 +457,12 @@ async function initializeSync(): Promise<void> {
           : "Appairer cet appareil avec ta synchronisation privée Triforce Checklist?");
         if (accepted) installPairingBundle(bundle);
         else {
-          activeConfig = loadConfig();
+          activeConfig = await loadConfig();
           updateVisibleState();
         }
         window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
       } else {
-        activeConfig = loadConfig();
+        activeConfig = await loadConfig();
         updateVisibleState();
       }
       useSync.setState({ initialized: true });
@@ -403,6 +493,7 @@ async function configureSync(endpointValue: string, tokenValue: string): Promise
     };
     activeConfig.document = createSyncDocument(currentCollection(), clockDeviceId(activeConfig));
     saveConfig();
+    requestPersistentStorage();
     updateVisibleState();
     await synchronize();
   } catch (error) {

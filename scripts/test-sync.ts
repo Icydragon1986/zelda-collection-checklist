@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import {
   createPairingUrl,
+  createPairingQrValue,
   decodePairingBundle,
   decryptSyncPayload,
   encodePairingBundle,
@@ -51,6 +52,7 @@ async function run(): Promise<void> {
   };
   assert.deepEqual(decodePairingBundle(encodePairingBundle(bundle)), bundle, "Le code d’appairage doit être réversible.");
   assert.deepEqual(pairingBundleFromInput(createPairingUrl(bundle)), bundle, "Le lien QR doit contenir le bon appairage.");
+  assert.deepEqual(pairingBundleFromInput(createPairingQrValue(bundle)), bundle, "Le QR interne doit contenir le bon appairage.");
 
   console.log("Synchronisation valide : fusion, décochage, chiffrement et appairage.");
 }
