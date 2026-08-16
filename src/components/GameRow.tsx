@@ -32,11 +32,18 @@ export function GameRow({ game }: { game: Game }) {
         >
           <StatusIndicator cib={own.cib} any={anyOwned} />
           <Cover id={game.id} src={GAME_COVERS[game.id]} alt={game.title} className="h-28 sm:h-36" />
-          <div className="min-w-0 flex-1">
-            <p className={cn("text-sm font-medium", anyOwned && "text-muted-foreground", own.cib && "line-through decoration-primary/40")}>{game.title}</p>
-            <div className="mt-1 flex flex-wrap items-center gap-1.5">
-              {game.category !== "main" && <Badge variant={game.category === "curiosity" ? "destructive" : "outline"} className="text-[10px] font-normal">{categoryLabel(game.category, language)}</Badge>}
-              <span className="text-xs tabular-nums text-muted-foreground">{game.year}</span>
+          <div className="min-w-0 flex-1 sm:flex sm:items-center sm:gap-3">
+            <p className={cn("min-w-0 flex-1 text-sm font-medium", anyOwned && "text-muted-foreground", own.cib && "line-through decoration-primary/40")}>{game.title}</p>
+            <div className="mt-1 flex flex-wrap items-center gap-2 sm:mt-0 sm:shrink-0 sm:flex-nowrap">
+              {game.category !== "main" && (
+                <Badge
+                  variant={game.category === "curiosity" ? "destructive" : "outline"}
+                  className="h-6 border-primary/35 bg-primary/5 px-2.5 text-[11px] font-medium text-foreground"
+                >
+                  {categoryLabel(game.category, language)}
+                </Badge>
+              )}
+              <span className="text-xs tabular-nums text-muted-foreground sm:w-11 sm:text-right">{game.year}</span>
             </div>
           </div>
         </div>

@@ -1,5 +1,11 @@
 # Notes de version
 
+## 1.2.2
+
+- retour des tags de catégorie bien visibles à droite des jeux dans l'application Windows;
+- agrandissement et amélioration du contraste des tags « Réédition », « Édition spéciale » et des autres catégories;
+- conservation d'un affichage compact sous le titre sur iPhone et les petits écrans.
+
 ## 1.2.1
 
 - ajout d'une catégorie et d'un filtre « Réédition » distincts des véritables éditions spéciales;
