@@ -1,5 +1,14 @@
 # Notes de version
 
+## 1.2.1
+
+- ajout d'une catégorie et d'un filtre « Réédition » distincts des véritables éditions spéciales;
+- reclassement de 23 sorties Player's Choice, Nintendo Selects, Classic Series, Nintendo Classics, Super Classic Serie et Happy Price Selection;
+- ajout d'un lecteur QR directement dans l'application iPhone installée pour éviter la séparation entre Safari et la PWA;
+- conservation renforcée de l'appairage grâce à une sauvegarde locale secondaire;
+- reprise immédiate de la synchronisation lorsque l'application iPhone revient au premier plan;
+- clarification de l'état de synchronisation lorsque l'iPhone suspend l'application en arrière-plan.
+
 ## 1.2.0
 
 - ajout d'une synchronisation privée facultative entre Windows, iPhone et les autres appareils Web;
