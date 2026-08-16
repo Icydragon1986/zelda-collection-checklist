@@ -1,6 +1,6 @@
 [package]
 name = "zelda-collection-checklist"
-version = "1.2.0"
+version = "1.2.1"
 description = "Checklist personnelle pour les collections The Legend of Zelda"
 authors = ["Icydragon1986"]
 edition = "2021"
