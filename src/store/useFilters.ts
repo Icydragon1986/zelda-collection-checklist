@@ -3,7 +3,7 @@ import type { GameCategory } from "@/data/types";
 
 export type OptionalCategory = Extract<
   GameCategory,
-  "spinoff" | "compilation" | "edition" | "broadcast" | "curiosity"
+  "spinoff" | "compilation" | "reissue" | "edition" | "broadcast" | "curiosity"
 >;
 export type OwnershipFilter = "all" | "owned" | "missing" | "cib" | "incomplete";
 
@@ -23,6 +23,7 @@ export const useFilters = create<FiltersState>((set, get) => ({
   categories: {
     spinoff: true,
     compilation: true,
+    reissue: true,
     edition: true,
     broadcast: false,
     curiosity: false,

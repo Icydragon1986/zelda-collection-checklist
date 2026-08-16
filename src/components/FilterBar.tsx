@@ -4,7 +4,7 @@ import { Switch } from "@/components/ui/switch";
 import { useFilters, type OptionalCategory, type OwnershipFilter } from "@/store/useFilters";
 import { useI18n } from "@/i18n";
 
-const CATEGORY_TOGGLES: OptionalCategory[] = ["spinoff", "compilation", "edition", "broadcast", "curiosity"];
+const CATEGORY_TOGGLES: OptionalCategory[] = ["spinoff", "compilation", "reissue", "edition", "broadcast", "curiosity"];
 
 export function FilterBar() {
   const { t } = useI18n();
