@@ -50,6 +50,7 @@ export type GameCategory =
   | "main" // jeu Zelda principal
   | "spinoff" // Hyrule Warriors, Cadence of Hyrule, Tingle...
   | "compilation" // bonus de précommande, Collector's Edition (disque multi-jeux), Famicom Mini...
+  | "reissue" // gamme économique/réédition: Player's Choice, Nintendo Selects, Classic Series...
   | "edition" // édition collector/limitée d'un jeu déjà listé (steelbook, figurine, artbook...)
   | "broadcast" // BS Zelda (Satellaview) - pas un produit retail standard
   | "curiosity" // CD-i Philips, non-Nintendo
@@ -59,6 +60,7 @@ export const CATEGORY_LABELS: Record<GameCategory, string> = {
   main: "Jeu principal",
   spinoff: "Dérivé",
   compilation: "Bonus / Compilation",
+  reissue: "Réédition",
   edition: "Édition spéciale",
   broadcast: "Diffusion (Satellaview)",
   curiosity: "Curiosité (non-Nintendo)",
