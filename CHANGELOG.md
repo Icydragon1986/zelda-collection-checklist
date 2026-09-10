@@ -1,5 +1,9 @@
 # Notes de version
 
+## 1.3.1
+
+- correction des nouveaux visuels avec fond blanc : les produits et amiibo concernés utilisent maintenant une transparence réelle dans l'application.
+
 ## 1.3.0
 
 - ajout des versions physiques nord-américaine, PAL et japonaise de *The Legend of Zelda: Ocarina of Time* sur Nintendo Switch 2;
