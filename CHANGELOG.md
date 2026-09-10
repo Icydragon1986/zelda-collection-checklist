@@ -1,6 +1,6 @@
 # Notes de version
 
-## Prochaine version
+## 1.3.0
 
 - ajout des versions physiques nord-américaine, PAL et japonaise de *The Legend of Zelda: Ocarina of Time* sur Nintendo Switch 2;
 - ajout de la Nintendo Switch 2 – The Legend of Zelda – 40th Anniversary Edition dans les trois régions;
