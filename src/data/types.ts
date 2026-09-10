@@ -85,6 +85,7 @@ export type AmiiboSeries =
   | "Breath of the Wild"
   | "Skyward Sword"
   | "Link's Awakening"
+  | "Ocarina of Time"
   | "Tears of the Kingdom";
 
 export const AMIIBO_SERIES_ORDER: AmiiboSeries[] = [
@@ -95,6 +96,7 @@ export const AMIIBO_SERIES_ORDER: AmiiboSeries[] = [
   "Breath of the Wild",
   "Skyward Sword",
   "Link's Awakening",
+  "Ocarina of Time",
   "Tears of the Kingdom",
 ];
 
@@ -117,5 +119,6 @@ export interface SpecialConsole {
   family: string;
   region: Region | "MONDE";
   year: number;
+  upcoming?: boolean;
   notes?: string;
 }

@@ -7,8 +7,10 @@ import { useFilters } from "@/store/useFilters";
 import { normalize } from "@/lib/collection";
 import { cn } from "@/lib/utils";
 import type { Region } from "@/data/types";
+import { useI18n } from "@/i18n";
 
 export function SpecialConsoleView({ region }: { region: Region }) {
+  const { t } = useI18n();
   const query = normalize(useFilters((s) => s.search).trim());
   const ownership = useFilters((s) => s.ownership);
   const consoles = useCollection((s) => s.consoles);
@@ -34,7 +36,12 @@ export function SpecialConsoleView({ region }: { region: Region }) {
             <Cover id={item.id} src={SPECIAL_CONSOLE_COVERS[item.id]} alt={item.name} shape="square" className="h-24 w-24 sm:h-32 sm:w-32" />
             <div className="min-w-0 flex-1">
               <p className="text-sm font-medium leading-tight">{item.name}</p>
-              <div className="mt-2 flex flex-wrap gap-1.5"><Badge variant="outline">{item.family}</Badge><Badge variant="secondary">{item.region}</Badge><span className="text-xs text-muted-foreground">{item.year}</span></div>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                <Badge variant="outline">{item.family}</Badge>
+                <Badge variant="secondary">{item.region}</Badge>
+                {item.upcoming && <Badge variant="secondary">{t("badge.upcoming")}</Badge>}
+                <span className="text-xs text-muted-foreground">{item.year}</span>
+              </div>
               {item.notes && <p className="mt-2 text-xs text-muted-foreground">{item.notes}</p>}
             </div>
           </label>

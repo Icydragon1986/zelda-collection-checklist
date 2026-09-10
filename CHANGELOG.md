@@ -1,5 +1,15 @@
 # Notes de version
 
+## Prochaine version
+
+- ajout des versions physiques nord-américaine, PAL et japonaise de *The Legend of Zelda: Ocarina of Time* sur Nintendo Switch 2;
+- ajout de la Nintendo Switch 2 – The Legend of Zelda – 40th Anniversary Edition dans les trois régions;
+- ajout des manettes Pro et des étuis officiels du 40e anniversaire, avec leurs variantes régionales;
+- ajout des amiibo Young Link et Young Zelda annoncés pour 2027, avec emballages officiels seulement lorsqu'ils sont publiés;
+- ajout du statut « À venir » aux consoles et accessoires annoncés;
+- renommage de l'onglet « Consoles » en « Consoles et accessoires »;
+- affichage des notes de catalogue dans la fiche d'un jeu, notamment lorsqu'un visuel officiel est encore provisoire.
+
 ## 1.2.2
 
 - retour des tags de catégorie bien visibles à droite des jeux dans l'application Windows;

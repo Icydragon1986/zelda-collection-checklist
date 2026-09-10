@@ -49,7 +49,8 @@ export function GameRow({ game }: { game: Game }) {
         </div>
       </PopoverTrigger>
       <PopoverContent className="w-64" align="start">
-        <p className="mb-3 text-sm font-semibold">{game.title}</p>
+        <p className={cn("text-sm font-semibold", game.notes ? "mb-1" : "mb-3")}>{game.title}</p>
+        {game.notes && <p className="mb-3 text-xs leading-relaxed text-muted-foreground">{game.notes}</p>}
         <div className="flex flex-col gap-2.5">
           <OwnershipToggle
             label={t("ownership.media")}

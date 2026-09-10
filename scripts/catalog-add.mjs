@@ -74,6 +74,7 @@ async function addConsole(id, list) {
     family: required("family"),
     region,
     year: validateYear(required("year")),
+    upcoming: Boolean(args.upcoming) || undefined,
     notes: args.notes,
     image,
   }));
@@ -201,7 +202,7 @@ Jeu :
   npm run catalog:add -- --kind game --id ID --title TITRE --console CONSOLE --region NA|PAL|JP --year ANNÉE --category CATÉGORIE --image FICHIER_OU_URL [--notes TEXTE]
 
 Console :
-  npm run catalog:add -- --kind console --id ID --name NOM --family FAMILLE --region NA|PAL|JP|MONDE --year ANNÉE --image FICHIER_OU_URL [--notes TEXTE]
+  npm run catalog:add -- --kind console --id ID --name NOM --family FAMILLE --region NA|PAL|JP|MONDE --year ANNÉE --image FICHIER_OU_URL [--upcoming] [--notes TEXTE]
 
 Amiibo :
   npm run catalog:add -- --kind amiibo --id ID --name NOM --series SÉRIE --year ANNÉE --image FIGURINE [--boxed-na IMAGE] [--boxed-pal IMAGE] [--boxed-jp IMAGE] [--variant] [--upcoming] [--pack] [--regions NA,PAL,JP] [--boxed-regions NA,PAL,JP] [--notes TEXTE]

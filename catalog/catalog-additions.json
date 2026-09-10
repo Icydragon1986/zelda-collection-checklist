@@ -1,5 +1,178 @@
 {
-  "games": [],
-  "consoles": [],
-  "amiibo": []
+  "games": [
+    {
+      "id": "na-switch2-oot-2026",
+      "title": "Ocarina of Time",
+      "console": "Nintendo Switch 2",
+      "region": "NA",
+      "year": 2026,
+      "category": "upcoming",
+      "notes": "Version physique prévue le 5 novembre 2026. La première impression nord-américaine possède une jaquette métallisée texturée, jusqu'à épuisement des stocks.",
+      "image": "/images/catalog-additions/games/na-switch2-oot-2026.webp"
+    },
+    {
+      "id": "pal-switch2-oot-2026",
+      "title": "Ocarina of Time",
+      "console": "Nintendo Switch 2",
+      "region": "PAL",
+      "year": 2026,
+      "category": "upcoming",
+      "notes": "Version physique PAL prévue le 5 novembre 2026. Visuel promotionnel officiel temporaire; la jaquette PAL finale n'est pas encore publiée.",
+      "image": "/images/catalog-additions/games/pal-switch2-oot-2026.webp"
+    },
+    {
+      "id": "jp-switch2-oot-2026",
+      "title": "Zelda no Densetsu: Toki no Ocarina",
+      "console": "Nintendo Switch 2",
+      "region": "JP",
+      "year": 2026,
+      "category": "upcoming",
+      "notes": "Version physique japonaise prévue le 5 novembre 2026. Le premier tirage inclut un bonus de précommande: cinq cartes A5, un support en papier et des autocollants, jusqu'à épuisement des stocks.",
+      "image": "/images/catalog-additions/games/jp-switch2-oot-2026.webp"
+    }
+  ],
+  "consoles": [
+    {
+      "id": "console-switch2-zelda40-na",
+      "name": "Nintendo Switch 2 – The Legend of Zelda – 40th Anniversary Edition",
+      "family": "Nintendo Switch 2",
+      "region": "NA",
+      "year": 2026,
+      "upcoming": true,
+      "notes": "Sortie prévue le 29 octobre 2026. Console, Joy-Con 2 et station d'accueil décorés; aucun jeu inclus.",
+      "image": "/images/catalog-additions/consoles/console-switch2-zelda40-na.webp"
+    },
+    {
+      "id": "console-switch2-zelda40-pal",
+      "name": "Nintendo Switch 2 – The Legend of Zelda – 40th Anniversary Edition",
+      "family": "Nintendo Switch 2",
+      "region": "PAL",
+      "year": 2026,
+      "upcoming": true,
+      "notes": "Sortie PAL prévue le 29 octobre 2026. Console, Joy-Con 2 et station d'accueil décorés; aucun jeu inclus. Visuel officiel du produit.",
+      "image": "/images/catalog-additions/consoles/console-switch2-zelda40-pal.webp"
+    },
+    {
+      "id": "console-switch2-zelda40-jp",
+      "name": "Nintendo Switch 2 – Zelda no Densetsu 40th Anniversary Edition",
+      "family": "Nintendo Switch 2",
+      "region": "JP",
+      "year": 2026,
+      "upcoming": true,
+      "notes": "Sortie prévue le 29 octobre 2026. Modèle japonais à interface japonaise seulement; aucun jeu inclus.",
+      "image": "/images/catalog-additions/consoles/console-switch2-zelda40-jp.webp"
+    },
+    {
+      "id": "accessory-switch2-pro-zelda40-na",
+      "name": "Nintendo Switch 2 Pro Controller – Zelda 40th Anniversary Edition",
+      "family": "Nintendo Switch 2 – Manettes",
+      "region": "NA",
+      "year": 2026,
+      "upcoming": true,
+      "notes": "Version nord-américaine sans support d'exposition; sortie prévue le 29 octobre 2026.",
+      "image": "/images/catalog-additions/consoles/accessory-switch2-pro-zelda40-na.webp"
+    },
+    {
+      "id": "accessory-switch2-pro-zelda40-stand-na",
+      "name": "Nintendo Switch 2 Pro Controller + Display Stand – Zelda 40th Anniversary Edition",
+      "family": "Nintendo Switch 2 – Manettes",
+      "region": "NA",
+      "year": 2026,
+      "upcoming": true,
+      "notes": "Variante nord-américaine avec support d'exposition; exclusivité Nintendo NEW YORK, Nintendo SAN FRANCISCO et Nintendo Store. Sortie prévue le 29 octobre 2026.",
+      "image": "/images/catalog-additions/consoles/accessory-switch2-pro-zelda40-stand-na.webp"
+    },
+    {
+      "id": "accessory-switch2-pro-zelda40-stand-pal",
+      "name": "Nintendo Switch 2 Pro Controller + Display Stand – Zelda 40th Anniversary Edition",
+      "family": "Nintendo Switch 2 – Manettes",
+      "region": "PAL",
+      "year": 2026,
+      "upcoming": true,
+      "notes": "Version PAL avec support d'exposition; sortie prévue le 29 octobre 2026. Visuel officiel du produit.",
+      "image": "/images/catalog-additions/consoles/accessory-switch2-pro-zelda40-stand-pal.webp"
+    },
+    {
+      "id": "accessory-switch2-pro-zelda40-stand-jp",
+      "name": "Nintendo Switch 2 Pro Controller + Display Stand – Zelda 40th Anniversary Edition",
+      "family": "Nintendo Switch 2 – Manettes",
+      "region": "JP",
+      "year": 2026,
+      "upcoming": true,
+      "notes": "Version japonaise avec support d'exposition; sortie prévue le 29 octobre 2026.",
+      "image": "/images/catalog-additions/consoles/accessory-switch2-pro-zelda40-stand-jp.webp"
+    },
+    {
+      "id": "accessory-switch2-case-zelda40-na",
+      "name": "Nintendo Switch 2 Carrying Case & Screen Protector – Zelda 40th Anniversary Edition",
+      "family": "Nintendo Switch 2 – Accessoires",
+      "region": "NA",
+      "year": 2026,
+      "upcoming": true,
+      "notes": "Étui de transport avec protecteur d'écran; sortie prévue le 29 octobre 2026.",
+      "image": "/images/catalog-additions/consoles/accessory-switch2-case-zelda40-na.webp"
+    },
+    {
+      "id": "accessory-switch2-case-zelda40-pal",
+      "name": "Nintendo Switch 2 Carrying Case & Screen Protector – Zelda 40th Anniversary Edition",
+      "family": "Nintendo Switch 2 – Accessoires",
+      "region": "PAL",
+      "year": 2026,
+      "upcoming": true,
+      "notes": "Étui de transport PAL avec protecteur d'écran; sortie prévue le 29 octobre 2026. Visuel officiel du produit.",
+      "image": "/images/catalog-additions/consoles/accessory-switch2-case-zelda40-pal.webp"
+    },
+    {
+      "id": "accessory-switch2-case-zelda40-jp",
+      "name": "Nintendo Switch 2 Carrying Case & Screen Protector – Zelda 40th Anniversary Edition",
+      "family": "Nintendo Switch 2 – Accessoires",
+      "region": "JP",
+      "year": 2026,
+      "upcoming": true,
+      "notes": "Étui de transport japonais avec protecteur d'écran; sortie prévue le 29 octobre 2026.",
+      "image": "/images/catalog-additions/consoles/accessory-switch2-case-zelda40-jp.webp"
+    }
+  ],
+  "amiibo": [
+    {
+      "id": "amiibo-oot-young-link",
+      "name": "Young Link",
+      "series": "Ocarina of Time",
+      "year": 2027,
+      "upcoming": true,
+      "notes": "Annoncé pour 2027; la date exacte reste à confirmer. L'emballage nord-américain officiel est publié; les emballages PAL et japonais seront ajoutés lorsqu'ils seront dévoilés.",
+      "regions": [
+        "NA",
+        "PAL",
+        "JP"
+      ],
+      "boxedRegions": [
+        "NA"
+      ],
+      "figureImage": "/images/catalog-additions/amiibo-figures/amiibo-oot-young-link.webp",
+      "packageImages": {
+        "NA": "/images/catalog-additions/amiibo-packages/amiibo-oot-young-link-na.webp"
+      }
+    },
+    {
+      "id": "amiibo-oot-young-zelda",
+      "name": "Young Zelda",
+      "series": "Ocarina of Time",
+      "year": 2027,
+      "upcoming": true,
+      "notes": "Annoncé pour 2027; la date exacte reste à confirmer. L'emballage nord-américain officiel est publié; les emballages PAL et japonais seront ajoutés lorsqu'ils seront dévoilés.",
+      "regions": [
+        "NA",
+        "PAL",
+        "JP"
+      ],
+      "boxedRegions": [
+        "NA"
+      ],
+      "figureImage": "/images/catalog-additions/amiibo-figures/amiibo-oot-young-zelda.webp",
+      "packageImages": {
+        "NA": "/images/catalog-additions/amiibo-packages/amiibo-oot-young-zelda-na.webp"
+      }
+    }
+  ]
 }
