@@ -1,5 +1,9 @@
 # Notes de version
 
+## 1.3.3
+
+- recadrage des visuels individuels et des emballages des amiibo Young Link et Young Zelda afin qu'ils s'affichent à une échelle cohérente.
+
 ## 1.3.2
 
 - recadrage de la jaquette nord-américaine de *Ocarina of Time* sur Nintendo Switch 2 afin qu'elle s'affiche à la même échelle que les autres jeux.
