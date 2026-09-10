@@ -1,5 +1,9 @@
 # Notes de version
 
+## 1.3.2
+
+- recadrage de la jaquette nord-américaine de *Ocarina of Time* sur Nintendo Switch 2 afin qu'elle s'affiche à la même échelle que les autres jeux.
+
 ## 1.3.1
 
 - correction des nouveaux visuels avec fond blanc : les produits et amiibo concernés utilisent maintenant une transparence réelle dans l'application.
